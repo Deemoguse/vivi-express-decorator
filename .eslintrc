@@ -8,6 +8,10 @@
 		"@typescript-eslint",
 		"align-import"
 	],
+	"extends": [
+		"./dist",
+		"./test"
+	],
 	"env": {
 		"es6": true,
 		"node": true
