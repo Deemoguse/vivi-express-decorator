@@ -8,9 +8,9 @@
 		"@typescript-eslint",
 		"align-import"
 	],
-	"extends": [
-		"./dist",
-		"./test"
+	"ignorePatterns": [
+		"./dist/**/*.ts",
+		"./test/**/*.ts"
 	],
 	"env": {
 		"es6": true,
