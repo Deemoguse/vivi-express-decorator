@@ -1,0 +1,1 @@
+{"version":3,"file":"attach-controllers.d.ts","sourceRoot":"","sources":["../../src/modules/attach-controllers.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,OAAO,EAAE,MAAsB,SAAS,CAAC;AACvD,OAAO,KAAK,EAAE,eAAe,EAAE,MAAc,qBAAqB,CAAC;AAEnE,wBAAgB,gBAAgB,CAAE,GAAG,EAAE,OAAO,EAAE,WAAW,EAAE,eAAe,EAAE,GAAG,IAAI,CAkDpF"}
