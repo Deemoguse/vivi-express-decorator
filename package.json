@@ -4,7 +4,8 @@
 	"description": "Express decorators",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "tsc",
+		"_build": "tsc -p ./tsconfig.json ./src/main.ts ./dist/index.js",
+		"build": "tsc --help",
 		"eslint": "eslint ./src/**/*.ts --color",
 		"eslint:fix": "eslint ./src/**/*.ts --fix"
 	},
@@ -17,7 +18,8 @@
 		"@typescript-eslint/parser": "^5.49.0",
 		"eslint": "^8.33.0",
 		"eslint-plugin-align-import": "^1.0.0",
-		"mocha": "^10.2.0"
+		"mocha": "^10.2.0",
+		"typescript": "^4.9.5"
 	},
 	"dependencies": {
 		"express": "^4.18.2"
