@@ -12,8 +12,8 @@
 		"outDir": "./dist/",
 		"sourceMap": true,
 		"strict": true,
-		"target": "ESNext",
+		"target": "ES6",
 	},
-	"include": [ "src", "test" ],
+	"include": [ "src" ],
 	"exclude": [ "node_modules" ]
 }
