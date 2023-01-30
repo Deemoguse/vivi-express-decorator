@@ -4,8 +4,7 @@
 	"description": "Express decorators",
 	"main": "dist/index.js",
 	"scripts": {
-		"_build": "tsc -p ./tsconfig.json ./src/main.ts ./dist/index.js",
-		"build": "tsc --help",
+		"build": "tsc",
 		"eslint": "eslint ./src/**/*.ts --color",
 		"eslint:fix": "eslint ./src/**/*.ts --fix"
 	},
