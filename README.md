@@ -1,4 +1,4 @@
-# VIVI. Express-decorators.
+# WAMBATA. Express-decorators.
 
 A minimalistic package that supplies decorator functions for working with Express controller classes.
 
