@@ -1,7 +1,7 @@
 {
-	"name": "vivi-rollup-template",
+	"name": "vivi-express-decorator",
 	"version": "1.0.0",
-	"description": "Rollup-typescript starter template",
+	"description": "A minimalistic package that supplies decorator functions for working with Express controller classes.",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
 	"types": "dist/index.d.ts",
@@ -17,6 +17,10 @@
 		"template"
 	],
 	"author": "Ruslan Radionov <cugune.tyan@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "A minimalistic package that supplies decorator functions for working with Express controller classes."
+	},
 	"license": "MIT",
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^22.0.0",
