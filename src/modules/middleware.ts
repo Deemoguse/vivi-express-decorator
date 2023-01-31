@@ -52,11 +52,13 @@ export function Middleware (...handlers: Method<true>[]): Function
 				});
 			}
 
+			// Modify record:
 			const methodRecord = repository.getMethod(controllerPrototype, controllerPrototype[key])!;
 					methodRecord.middlewares = Array.isArray(handlers)
 						? [ ...(methodRecord?.middlewares || []), ...handlers ]
 						: [ ...(methodRecord?.middlewares || []), handlers ];
 
+			// Record new data:
 			repository.setMethod(controllerPrototype, methodRecord);
 		}
 		else
@@ -69,11 +71,13 @@ export function Middleware (...handlers: Method<true>[]): Function
 				repository.setController(controller, '');
 			}
 
+			// Modify record:
 			const controllerRecord = repository.getController(controller)!;
 					controllerRecord.middlewares = Array.isArray(handlers)
 						? [ ...(controllerRecord?.middlewares || []), ...handlers ]
 						: [ ...(controllerRecord?.middlewares || []), handlers ];
 
+			// Record new data
 			repository.setController(controller, controllerRecord.url);
 		}
 	}

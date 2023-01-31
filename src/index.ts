@@ -2,7 +2,7 @@ export *                from './modules/attach-controllers';
 export *                from './modules/controller';
 export *                from './modules/http-methods';
 export *                from './modules/middleware';
-export * as Respository from './modules/repository';
+export * as respository from './modules/repository';
 
 // Types:
 export type { Method }                                     from './types/method';
