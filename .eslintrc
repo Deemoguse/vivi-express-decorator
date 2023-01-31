@@ -9,8 +9,8 @@
 		"align-import"
 	],
 	"ignorePatterns": [
-		"./dist/**/*.ts",
-		"./test/**/*.ts"
+		"dist/**/*.js",
+		"test/**/*.js"
 	],
 	"env": {
 		"es6": true,
