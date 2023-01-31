@@ -3,12 +3,13 @@
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
+		"experimentalDecorators": true,
 		"lib": ["ESNext", "DOM"],
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"strictFunctionTypes": true,
 		"target": "ES3",
 	},
-	"include": [ "src" ],
+	"include": [ "./" ],
 	"exclude": ["node_modules", "**/node_modules/*"]
 }

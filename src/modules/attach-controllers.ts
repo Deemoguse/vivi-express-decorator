@@ -4,7 +4,7 @@ import { getController, getMethodList } from './repository';
 import type { Express }                 from 'express';
 import type { ClassController }         from '../types/controller';
 
-export function attachController (app: Express, controllers: ClassController[]): void
+export function AttachController (app: Express, controllers: ClassController[]): void
 {
 	// The router to which the methods defined as API will be registered:
 	const apiRouter = Router();

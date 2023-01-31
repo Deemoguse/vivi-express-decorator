@@ -1,23 +1,107 @@
-Rollup - Template
+# VIVI. Express-decorator.
 
-`rollup-typescript` starter template for library development.
+A minimalistic package that supplies decorator functions for working with Express controller classes.
 
-## Install
-```
-$ git clone https://github.com/Deemoguse/vivi-rollup-template.git
-```
-After cloning, untie the original repository and link your own:
-```
-$ git remote remove origin
-$ git remote add <your_repository>
+* * * * *
+
+## Installation
+To install, run the following command:
+```bash
+$ npm i --save-dev @vivi/express-decorators
 ```
 
-## Commands
-- `build` – the command starts the library build process by first clearing the `dist` folder.
-- `test` – running your tests from the `test` folder in the project root.
+## Controller Declaration
+Import the necessary module components and use them as decorators for the controller class:
+```js
+import { Controller, Get, Post, Api } from '@vivi/express-decorators';
 
-## Outputs
-The `dist` folder will be generated based on the build result. it will contain a folder with __CommonJS__ and __ECMAScript Module__ in the `cjs` and `esm` folders, respectively, in __ES3__ language version. Type declaration in the `index.d.ts` works equally well for the two of them.
+@Controller('/post')
+export class PostController
+{
 
-## Testing
-[`jest`](https://jestjs.io/) and [`ts-jest`](https://kulshekhar.github.io/ts-jest/) are used for testing, respectively. To configure `jest`, refer to `packege.json`.
+	@Get('/:id')
+	async public getPost (req, res) {/* . . . */}
+
+	@Api()
+	@Post('/create/')
+	async public setPost (req, res) {/* . . . */}
+}
+```
+
+## Using the controller
+Alternatively, you can call this function and pass the application instance to it with the first argument, and an array of controllers with the second:
+```js
+import express               from 'express';
+import { AttachControllers } from '@vivi/express-decorators';
+import { PostController }    from '@controllers/post.controller';
+
+const app = express();
+
+AttachControllers(app, [ PostController ]);
+
+app.listen(8080);
+```
+
+## Controller, HTTP methods, API and Middleware
+This package contains decorators for declaring any route method (`GET`, `POST`, `DELETE`, etc.). In addition, it has an `Api` decorator for declaring a method as part of the REST API and `Middleware` for embedding middleware for routes. The `Controller` decorator is needed to declare the parent class as a route, from which it will inherit the URL for the child routes:
+```js
+@Controller('/post')
+class PostController
+{
+	@Get('/:id')
+	getPost () {/* will be available at "/post/all" */}
+
+	@Post('/set')
+	setPost () {/* will be available at "/post/create" */}
+}
+```
+
+The `Api` decorator works in such a way that for these routes the inherited URL expands and acquires the prefix '/api/'. This generally changes the target URL at which this router will be accessible:
+```js
+@Controller('/post')
+class PostController
+{
+	@Get('/:id')
+	getPost () {/* 🔹will be available at "/post/all" */}
+
+	@Api()
+	@Post('/set')
+	setPost () {/* 🔹will be available at "/api/post/create" */}
+}
+```
+
+The Api decorator must be placed above the HTTP method decorator. Otherwise it will cause an error:
+```js
+@Controller('/post')
+class PostController
+{
+	@Post('/set')
+	@Api()
+	setPost () {/* 🟢 Correct! */}
+	// VS
+	@Api()
+	@Post('/set')
+	setPost () {/* 😡 Incorrect! */}
+}
+```
+
+The location of the middleware decorator does not matter, unlike the position of the Api decorator. This decorator accepts a function or an array of functions that will be assigned to the laptop as middleware. This Decorator can be used for methods and for controllers:
+The Api decorator must be placed above the HTTP method decorator. Otherwise it will cause an error:
+```js
+@Controller('/post')
+@Middleware(UpdateVisitTimeMiddleware)
+class PostController
+{
+	@Api()
+	@Get('/:id')
+	getPost () {/* . . . */}
+
+	@Api()
+	@Post('/set')
+	@Middleware(UserIsAuthMiddleware)
+	setPost () {/* . . . */}
+}
+```
+
+## Participation and development
+You can also import a repository and extend\override its methods to change the behavior of decorators. Check out the source code to learn more. Let me know if you have any suYou can also import a repository and extend\override its methods to change the behavior of decorators. Check out the source code to learn more. Let me know if you have any suggestions for this package.ggestions for this package.
