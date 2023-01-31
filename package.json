@@ -1,5 +1,5 @@
 {
-	"name": "@vivi/express-decorator",
+	"name": "@vivi/express-decorators",
 	"private": false,
 	"version": "1.0.0",
 	"description": "A minimalistic package that supplies decorator functions for working with Express controller classes.",
