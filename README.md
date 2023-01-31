@@ -85,8 +85,7 @@ class PostController
 }
 ```
 
-The location of the middleware decorator does not matter, unlike the position of the Api decorator. This decorator accepts a function or an array of functions that will be assigned to the laptop as middleware. This Decorator can be used for methods and for controllers:
-The Api decorator must be placed above the HTTP method decorator. Otherwise it will cause an error:
+The location of the middleware decorator does not matter, unlike the position of the Api decorator. This decorator accepts a function or an array of functions that will be assigned to the route as middleware. This Decorator can be used for methods and for controllers:
 ```js
 @Controller('/post')
 @Middleware(UpdateVisitTimeMiddleware)
