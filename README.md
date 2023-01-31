@@ -18,7 +18,6 @@ import { Controller, Get, Post, Api } from '@vivi/express-decorators';
 @Controller('/post')
 export class PostController
 {
-
 	@Get('/:id')
 	async public getPost (req, res) {/* . . . */}
 
