@@ -20,7 +20,7 @@
 	"author": "Ruslan Radionov <cugune.tyan@gmail.com>",
 	"repository": {
 		"type": "git",
-		"url": "A minimalistic package that supplies decorator functions for working with Express controller classes."
+		"url": "https://github.com/Deemoguse/vivi-express-decorators.git"
 	},
 	"license": "MIT",
 	"devDependencies": {
