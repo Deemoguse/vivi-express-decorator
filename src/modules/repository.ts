@@ -15,16 +15,16 @@ export const repository: Repository = {
  * @param controller - controller class.
  * @param url - URL of the controller.
  **/
-export function setController (controller: ClassController, url: string): void
+export function setController (controller: ClassController, data: ControllerRecord): void
 {
 	if (hasController(controller))
 	{
-		const updateData = { ...getController(controller), controller, url, middlewares : []};
+		const updateData = { ...getController(controller), ...data };
 		repository.controllers.set(controller, updateData);
 	}
 	else
 	{
-		repository.controllers.set(controller, { controller, url, middlewares : []});
+		repository.controllers.set(controller, data);
 	}
 }
 

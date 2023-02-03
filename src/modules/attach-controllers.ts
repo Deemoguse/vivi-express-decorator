@@ -12,14 +12,14 @@ export function AttachController (app: Express, controllers: ClassController[]):
 	// Registration of controllers and its methods:
 	controllers.forEach(controller =>
 		{
-			const recordData = getController(controller);
+			const controllerData = getController(controller);
 
 			// If the controller was found, we register it in the
 			// transferred instance of the express application:
-			if (recordData)
+			if (controllerData)
 			{
 				const controllerRouter   = Router();
-				const controllerInstance = new recordData.controller();
+				const controllerInstance = new controllerData.controller();
 				const controllerMethods  = getMethodList(controller)!;
 
 				// It is important to bind the controller instance to
@@ -27,7 +27,7 @@ export function AttachController (app: Express, controllers: ClassController[]):
 				controllerMethods.forEach(methodRecord =>
 					{
 						const router            = methodRecord.isApi ? apiRouter : controllerRouter;
-						const routeURL          = methodRecord.isApi ? `${recordData.url}/${methodRecord.url}` : methodRecord.url;
+						const routeURL          = methodRecord.isApi ? `${controllerData.url}/${methodRecord.url}` : methodRecord.url;
 						const normalizeRouteURL = `/${normalize(routeURL).split(/[\\/]/).filter(w => w.match(/\w+/)).join('/')}`;
 
 						(router[methodRecord.method as keyof Router] as Function)(
@@ -40,8 +40,8 @@ export function AttachController (app: Express, controllers: ClassController[]):
 
 				// Register router:
 				app.use(
-					recordData.url,
-					recordData.middlewares || [],
+					controllerData.url,
+					controllerData.middlewares || [],
 					controllerRouter,
 				);
 			}

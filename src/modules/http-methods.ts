@@ -5,7 +5,7 @@ import type { ClassController }            from '../types/controller';
  * Produce a decorator function with the specified HTTP method.
  * @param method - HTTP method.
  **/
-function factoryMethodDecorators (method: string): (url: string) => MethodDecorator
+function factoryMethodDecorators (method: string): (url: string) => Function
 {
 	/**
 	 * Declare the method as an HTTP request.

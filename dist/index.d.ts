@@ -8,7 +8,7 @@ type ClassController =
 	| (new (...args: any[]) => { _routerURL?: string, [K: string]: any } )
 	;
 
-declare function attachController(app: Express, controllers: ClassController[]): void;
+declare function AttachController(app: Express, controllers: ClassController[]): void;
 
 /**
  * Create a wash down of controller data
@@ -28,47 +28,47 @@ declare function Api(): Function;
  * Declare the Get method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Get: (url: string) => MethodDecorator;
+declare const Get: (url: string) => Function;
 /**
  * Declare Post method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Post: (url: string) => MethodDecorator;
+declare const Post: (url: string) => Function;
 /**
  * Declare Patch method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Patch: (url: string) => MethodDecorator;
+declare const Patch: (url: string) => Function;
 /**
  * Declare Put method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Put: (url: string) => MethodDecorator;
+declare const Put: (url: string) => Function;
 /**
  * Declare Head method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Head: (url: string) => MethodDecorator;
+declare const Head: (url: string) => Function;
 /**
  * Declare Delete method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Delete: (url: string) => MethodDecorator;
+declare const Delete: (url: string) => Function;
 /**
  * Declare Connect method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Connect: (url: string) => MethodDecorator;
+declare const Connect: (url: string) => Function;
 /**
  * Declare Options method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Options: (url: string) => MethodDecorator;
+declare const Options: (url: string) => Function;
 /**
  * Declare Trace method as an HTTP request.
  * @param url - Request URL.
  **/
-declare const Trace: (url: string) => MethodDecorator;
+declare const Trace: (url: string) => Function;
 
 /**
  * HTTP methods of the controller class.
@@ -131,7 +131,7 @@ declare const repository: Repository;
  * @param controller - controller class.
  * @param url - URL of the controller.
  **/
-declare function setController(controller: ClassController, url: string): void;
+declare function setController(controller: ClassController, data: ControllerRecord): void;
 /**
  * Get сontroller class data.
  * @param controller - controller class.
@@ -189,4 +189,4 @@ declare namespace repository$1 {
   };
 }
 
-export { Api, ClassController, Connect, Controller, ControllerRecord, Delete, Get, Head, Method, MethodRecord, Middleware, Options, Patch, Post, Put, Repository, Trace, attachController, repository$1 as respository };
+export { Api, AttachController, ClassController, Connect, Controller, ControllerRecord, Delete, Get, Head, Method, MethodRecord, Middleware, Options, Patch, Post, Put, Repository, Trace, repository$1 as respository };

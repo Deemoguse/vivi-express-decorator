@@ -68,7 +68,7 @@ export function Middleware (...handlers: Method<true>[]): Function
 			if (repository.hasController(controller))
 			{
 				// Create empty controller record:
-				repository.setController(controller, '');
+				repository.setController(controller, { controller, url : '', middlewares : []});
 			}
 
 			// Modify record:
@@ -78,7 +78,7 @@ export function Middleware (...handlers: Method<true>[]): Function
 						: [ ...(controllerRecord?.middlewares || []), handlers ];
 
 			// Record new data
-			repository.setController(controller, controllerRecord.url);
+			repository.setController(controller, controllerRecord);
 		}
 	}
 
