@@ -12,7 +12,7 @@ export default function startHttpServer (controllers: any[])
 	AttachController(app, controllers);
 
 	return {
-		server : app.listen(8080),
+		server : app.listen(port),
 		app,
 	};
 }
