@@ -108,4 +108,4 @@ $ npm run test
 ```
 
 ## Participation and development
-You can also import a repository and extend\override its methods to change the behavior of decorators. Check out the source code to learn more. Let me know if you have any suYou can also import a repository and extend\override its methods to change the behavior of decorators. Check out the source code to learn more. Let me know if you have any suggestions for this package.ggestions for this package.
+You can also import a repository and extend\override its methods to change the behavior of decorators. Check out the source code to learn more. Let me know if you have any suggestions for this package.
