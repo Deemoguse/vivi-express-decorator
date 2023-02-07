@@ -13,7 +13,7 @@ $ npm i --save-dev @vivi/express-decorators
 ## Controller Declaration
 Import the necessary module components and use them as decorators for the controller class:
 ```js
-import { Controller, Get, Post, Api } from '@vivi/express-decorators';
+import { Controller, Get, Post, Api } from '@wambata/express-decorators';
 
 @Controller('/post')
 export class PostController
