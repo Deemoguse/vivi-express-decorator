@@ -31,7 +31,7 @@ export class PostController
 Alternatively, you can call this function and pass the application instance to it with the first argument, and an array of controllers with the second:
 ```js
 import express               from 'express';
-import { AttachControllers } from '@vivi/express-decorators';
+import { AttachControllers } from '@wambata/express-decorators';
 import { PostController }    from '@controllers/post.controller';
 
 const app = express();
