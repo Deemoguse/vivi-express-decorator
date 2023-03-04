@@ -2,7 +2,7 @@ export *                from './modules/attach-controllers';
 export *                from './modules/controller';
 export *                from './modules/http-methods';
 export *                from './modules/middleware';
-export * as config      from './modules/config';
+export *                from './modules/config';
 export * as respository from './modules/repository';
 
 // Types:

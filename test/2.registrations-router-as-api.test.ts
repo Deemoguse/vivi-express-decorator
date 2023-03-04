@@ -75,5 +75,35 @@ describe(`Registering a router as an API method. The order of assignment of the 
 				server.close();
 			},
 		);
+
+		it(`Registering an HTTP method as an Api method with changing the ${colors.bold.dim.yellow('apiURL')} property of the ${colors.bold.dim.yellow('config')} module.`, async () =>
+			{
+				_D.config.apiURL = '/my/api';
+
+				// Create class controller:
+				@_D.Controller('/test')
+				class HttpRoute
+				{
+					@_D.Api()
+					@_D.Get('/get')
+					public async get (req: Request, res: Response): Promise<void>
+					{
+						res.send({ value : 'ok' });
+					}
+				}
+
+				// Start server
+				const { server, app } = startHttpServer([ HttpRoute ]);
+
+				// Request to "server":
+				const response = await request(app).get('/my/api/test/get');
+				const data     = await response.body;
+
+				// Testing:
+				assert.equal(data.value, 'ok');
+
+				server.close();
+			},
+		);
 	},
 );
