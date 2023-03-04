@@ -1,5 +1,6 @@
 import { normalize }                    from 'path';
 import { Router }                       from 'express';
+import { config }                       from './config';
 import { getController, getMethodList } from './repository';
 import type { Express }                 from 'express';
 import type { ClassController }         from '../types/controller';
@@ -53,5 +54,5 @@ export function AttachController (app: Express, controllers: ClassController[]):
 	);
 
 	// Register API router:
-	app.use('/api', apiRouter);
+	app.use(config.apiURL, apiRouter);
 }

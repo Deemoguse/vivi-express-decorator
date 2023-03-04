@@ -55,8 +55,12 @@ class PostController
 }
 ```
 
-The `Api` decorator works in such a way that for these routes the inherited URL expands and acquires the prefix '/api/'. This generally changes the target URL at which this router will be accessible:
+The `Api` decorator works in such a way that for these rules the inherited URL expands and acquired the prefix `/api/`. This generally changes the target URL at which this router will be accessible. if the  `/api` prefix does not suit you, change the configuration of the property apiURL in the `config` module:
 ```js
+import { ..., config } from '@wambata/express-decorators';
+
+config.apiURL = '/my/api/path';
+
 @Controller('/post')
 class PostController
 {
@@ -65,7 +69,7 @@ class PostController
 
 	@Api()
 	@Post('/set')
-	setPost () {/* 🔹will be available at "/api/post/create" */}
+	setPost () {/* 🔹will be available at "/my/api/path/post/create" */}
 }
 ```
 
