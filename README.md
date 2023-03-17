@@ -80,11 +80,11 @@ class PostController
 {
 	@Post('/set')
 	@Api()
-	setPost () {/* 🟢 Correct! */}
+	setPost () {/* 😡 Incorrect! */}
 	// VS
 	@Api()
 	@Post('/set')
-	setPost () {/* 😡 Incorrect! */}
+	setPost () {/* 🟢 Correct! */}
 }
 ```
 
