@@ -43,7 +43,7 @@ app.listen(8080);
 
 ## Controller, HTTP methods, API and Middleware
 This package contains decorators for declaring any route method (`GET`, `POST`, `DELETE`, etc.). In addition, it has an `Api` decorator for declaring a method as part of the REST API and `Middleware` for embedding middleware for routes. The `Controller` decorator is needed to declare the parent class as a route, from which it will inherit the URL for the child routes:
-```js
+```ts
 @Controller('/post')
 class PostController
 {
