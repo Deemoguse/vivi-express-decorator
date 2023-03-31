@@ -48,10 +48,10 @@ This package contains decorators for declaring any route method (`GET`, `POST`, 
 class PostController
 {
 	@Get('/:id')
-	getPost () {/* will be available at "/post/all" */}
+	getPost () {/* will be available at "/post/1" */}
 
 	@Post('/set')
-	setPost () {/* will be available at "/post/create" */}
+	setPost () {/* will be available at "/post/set" */}
 }
 ```
 
@@ -65,11 +65,11 @@ config.apiURL = '/my/api/path';
 class PostController
 {
 	@Get('/:id')
-	getPost () {/* 🔹will be available at "/post/all" */}
+	getPost () {/* will be available at "/post/all" */}
 
 	@Api()
 	@Post('/set')
-	setPost () {/* 🔹will be available at "/my/api/path/post/create" */}
+	setPost () {/* will be available at "/my/api/path/post/create" */}
 }
 ```
 
@@ -80,11 +80,11 @@ class PostController
 {
 	@Post('/set')
 	@Api()
-	setPost () {/* 🟢 Correct! */}
+	setPost () {/* × Incorrect! */}
 	// VS
 	@Api()
 	@Post('/set')
-	setPost () {/* 😡 Incorrect! */}
+	setPost () {/* ° Correct! */}
 }
 ```
 
