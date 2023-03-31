@@ -7,7 +7,7 @@ A minimalistic package that supplies decorator functions for working with Expres
 ## Installation
 To install, run the following command:
 ```bash
-$ npm i --save-dev @vivi/express-decorators
+$ npm i --save-dev @wambata/express-decorators
 ```
 
 ## Controller Declaration
@@ -48,10 +48,12 @@ This package contains decorators for declaring any route method (`GET`, `POST`, 
 class PostController
 {
 	@Get('/:id')
+	@Middleware(userIsAuthMiddleware)
 	getPost () {/* will be available at "/post/1" */}
 
+	@Api()
 	@Post('/set')
-	setPost () {/* will be available at "/post/set" */}
+	setPost () {/* will be available at "/api/post/set" */}
 }
 ```
 
