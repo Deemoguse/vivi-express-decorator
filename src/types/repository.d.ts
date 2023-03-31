@@ -1,14 +1,14 @@
-import type { Method }          from './method';
+import type { Method } from './method';
 import type { ClassController } from './controller';
 
 /**
  * Recording of controller method data.
  **/
 export interface MethodRecord {
-	url          : string,
-	method       : string,
-	handler      : Method,
-	isApi       ?: boolean,
+	url : string,
+	method : string,
+	handler : Method,
+	isApi ?: boolean,
 	middlewares ?: Method<true>[],
 }
 
@@ -16,8 +16,8 @@ export interface MethodRecord {
  * Recording controller data.
  **/
 export interface ControllerRecord {
-	url          : string,
-	controller   : ClassController,
+	url : string,
+	controller : ClassController,
 	middlewares ?: Method<true>[],
 }
 
@@ -26,5 +26,5 @@ export interface ControllerRecord {
  **/
 export interface Repository {
 	controllers : Map<ClassController, ControllerRecord>,
-	methods     : Map<InstanceType<ClassController>, Map<Method, MethodRecord>>,
+	methods : Map<InstanceType<ClassController>, Map<Method, MethodRecord>>,
 }

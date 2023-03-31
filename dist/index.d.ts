@@ -98,10 +98,10 @@ declare function Middleware(...handlers: Method<true>[]): Function;
  * Recording of controller method data.
  **/
 interface MethodRecord {
-	url          : string,
-	method       : string,
-	handler      : Method,
-	isApi       ?: boolean,
+	url : string,
+	method : string,
+	handler : Method,
+	isApi ?: boolean,
 	middlewares ?: Method<true>[],
 }
 
@@ -109,8 +109,8 @@ interface MethodRecord {
  * Recording controller data.
  **/
 interface ControllerRecord {
-	url          : string,
-	controller   : ClassController,
+	url : string,
+	controller : ClassController,
 	middlewares ?: Method<true>[],
 }
 
@@ -119,7 +119,7 @@ interface ControllerRecord {
  **/
 interface Repository {
 	controllers : Map<ClassController, ControllerRecord>,
-	methods     : Map<InstanceType<ClassController>, Map<Method, MethodRecord>>,
+	methods : Map<InstanceType<ClassController>, Map<Method, MethodRecord>>,
 }
 
 /**

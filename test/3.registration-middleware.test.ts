@@ -1,12 +1,12 @@
-import colors                                   from 'colors';
-import assert                                   from 'assert';
-import request                                  from 'supertest';
-import startHttpServer                          from './utils/server';
-import * as _D                                  from '../src';
+import colors from 'colors';
+import assert from 'assert';
+import request from 'supertest';
+import startHttpServer from './utils/server';
+import * as _D from '../src';
 import type { Response, Request, NextFunction } from '../src';
 
 // Middleware functions:
-let middlewareForMethodCounter     = 0;
+let middlewareForMethodCounter = 0;
 let middlewareForControllerCounter = 0;
 
 function middlewareForController (req: Request, res: Response, next: NextFunction): void
@@ -45,7 +45,7 @@ describe(`Assigning a ${colors.bold.yellow('@Middleware')} decorator to controll
 		it(`Assigning ${colors.bold.dim.yellow('@Middleware')} to HTTP methods.`, async () =>
 			{
 				// Reset values:
-				middlewareForMethodCounter     = 0;
+				middlewareForMethodCounter = 0;
 				middlewareForControllerCounter = 0;
 
 				// Start server:
@@ -67,7 +67,7 @@ describe(`Assigning a ${colors.bold.yellow('@Middleware')} decorator to controll
 		it(`Assigning ${colors.bold.dim.yellow('@Middleware')} to controller.`, async () =>
 			{
 				// Reset values:
-				middlewareForMethodCounter     = 0;
+				middlewareForMethodCounter = 0;
 				middlewareForControllerCounter = 0;
 
 				// Start server:

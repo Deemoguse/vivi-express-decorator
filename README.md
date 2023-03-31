@@ -12,7 +12,7 @@ $ npm i --save-dev @vivi/express-decorators
 
 ## Controller Declaration
 Import the necessary module components and use them as decorators for the controller class:
-```js
+```ts
 import { Controller, Get, Post, Api } from '@wambata/express-decorators';
 
 @Controller('/post')
@@ -29,7 +29,7 @@ export class PostController
 
 ## Using the controller
 Alternatively, you can call this function and pass the application instance to it with the first argument, and an array of controllers with the second:
-```js
+```ts
 import express               from 'express';
 import { AttachControllers } from '@wambata/express-decorators';
 import { PostController }    from '@controllers/post.controller';
@@ -56,7 +56,7 @@ class PostController
 ```
 
 The `Api` decorator works in such a way that for these rules the inherited URL expands and acquired the prefix `/api/`. This generally changes the target URL at which this router will be accessible. if the  `/api` prefix does not suit you, change the configuration of the property apiURL in the `config` module:
-```js
+```ts
 import { ..., config } from '@wambata/express-decorators';
 
 config.apiURL = '/my/api/path';
@@ -74,7 +74,7 @@ class PostController
 ```
 
 The Api decorator must be placed above the HTTP method decorator. Otherwise it will cause an error:
-```js
+```ts
 @Controller('/post')
 class PostController
 {
@@ -89,7 +89,7 @@ class PostController
 ```
 
 The location of the middleware decorator does not matter, unlike the position of the Api decorator. This decorator accepts a function or an array of functions that will be assigned to the route as middleware. This Decorator can be used for methods and for controllers:
-```js
+```ts
 @Controller('/post')
 @Middleware(UpdateVisitTimeMiddleware)
 class PostController

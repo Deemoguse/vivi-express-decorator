@@ -1,8 +1,8 @@
-import colors                     from 'colors';
-import assert                     from 'assert';
-import request                    from 'supertest';
-import startHttpServer            from './utils/server';
-import * as _D                    from '../src';
+import colors from 'colors';
+import assert from 'assert';
+import request from 'supertest';
+import startHttpServer from './utils/server';
+import * as _D from '../src';
 import type { Response, Request } from '../src';
 
 // Testing:
@@ -58,7 +58,7 @@ describe(`Registering a router as an API method. The order of assignment of the 
 					@_D.Get('/get')
 					public async get (req: Request, res: Response): Promise<void>
 					{
-						res.send({ value : 'ok' });
+						res.send({ value: 'ok' });
 					}
 				}
 
@@ -67,7 +67,7 @@ describe(`Registering a router as an API method. The order of assignment of the 
 
 				// Request to "server":
 				const response = await request(app).get('/api/test/get');
-				const data     = await response.body;
+				const data = await response.body;
 
 				// Testing:
 				assert.equal(data.value, 'ok');
@@ -88,7 +88,7 @@ describe(`Registering a router as an API method. The order of assignment of the 
 					@_D.Get('/get')
 					public async get (req: Request, res: Response): Promise<void>
 					{
-						res.send({ value : 'ok' });
+						res.send({ value: 'ok' });
 					}
 				}
 
@@ -97,7 +97,7 @@ describe(`Registering a router as an API method. The order of assignment of the 
 
 				// Request to "server":
 				const response = await request(app).get('/my/api/test/get');
-				const data     = await response.body;
+				const data = await response.body;
 
 				// Testing:
 				assert.equal(data.value, 'ok');

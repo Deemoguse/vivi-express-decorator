@@ -9,6 +9,7 @@
 		"moduleResolution": "Node",
 		"strictFunctionTypes": true,
 		"target": "ES3",
+		"resolveJsonModule": true,
 	},
 	"include": [ "src" ],
 	"exclude": [ "node_modules", "dist" ]

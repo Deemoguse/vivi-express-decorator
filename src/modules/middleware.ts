@@ -1,5 +1,5 @@
-import * as repository          from './repository';
-import type { Method }          from '../types/method';
+import * as repository from './repository';
+import type { Method } from '../types/method';
 import type { ClassController } from '../types/controller';
 
 /**
@@ -46,9 +46,9 @@ export function Middleware (...handlers: Method<true>[]): Function
 			{
 				// Create empty method record:
 				repository.setMethod(controllerPrototype, {
-					url     : '',
-					method  : '',
-					handler : controllerPrototype[key],
+					url: '',
+					method: '',
+					handler: controllerPrototype[key],
 				});
 			}
 
@@ -68,7 +68,7 @@ export function Middleware (...handlers: Method<true>[]): Function
 			if (repository.hasController(controller))
 			{
 				// Create empty controller record:
-				repository.setController(controller, { controller, url : '', middlewares : []});
+				repository.setController(controller, { controller, url: '', middlewares: []});
 			}
 
 			// Modify record:

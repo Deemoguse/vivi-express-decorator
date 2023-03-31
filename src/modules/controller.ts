@@ -1,4 +1,4 @@
-import { setController }        from './repository';
+import { setController } from './repository';
 import type { ClassController } from '../types/controller';
 
 /**
@@ -11,8 +11,8 @@ export function Controller (url: string): ClassDecorator
 	{
 		controller.prototype._routerURL = url;
 		setController(controller as ClassController, {
-			controller  : controller as ClassController,
-			middlewares : [],
+			controller: controller as ClassController,
+			middlewares: [],
 			url,
 		});
 	};

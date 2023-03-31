@@ -1,9 +1,9 @@
-import { normalize }                    from 'path';
-import { Router }                       from 'express';
-import { config }                       from './config';
+import { normalize } from 'path';
+import { Router } from 'express';
+import { config } from './config';
 import { getController, getMethodList } from './repository';
-import type { Express }                 from 'express';
-import type { ClassController }         from '../types/controller';
+import type { Express } from 'express';
+import type { ClassController } from '../types/controller';
 
 export function AttachController (app: Express, controllers: ClassController[]): void
 {
@@ -19,16 +19,16 @@ export function AttachController (app: Express, controllers: ClassController[]):
 			// transferred instance of the express application:
 			if (controllerData)
 			{
-				const controllerRouter   = Router();
+				const controllerRouter = Router();
 				const controllerInstance = new controllerData.controller();
-				const controllerMethods  = getMethodList(controller)!;
+				const controllerMethods = getMethodList(controller)!;
 
 				// It is important to bind the controller instance to
 				// all its methods to avoid undesirable behavior:
 				controllerMethods.forEach(methodRecord =>
 					{
-						const router            = methodRecord.isApi ? apiRouter : controllerRouter;
-						const routeURL          = methodRecord.isApi ? `${controllerData.url}/${methodRecord.url}` : methodRecord.url;
+						const router = methodRecord.isApi ? apiRouter : controllerRouter;
+						const routeURL = methodRecord.isApi ? `${controllerData.url}/${methodRecord.url}` : methodRecord.url;
 						const normalizeRouteURL = `/${normalize(routeURL).split(/[\\/]/).filter(w => w.match(/\w+/)).join('/')}`;
 
 						(router[methodRecord.method as keyof Router] as Function)(

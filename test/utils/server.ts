@@ -1,4 +1,4 @@
-import express              from 'express';
+import express from 'express';
 import { AttachController } from '../../src';
 
 export default function startHttpServer (controllers: any[])
@@ -9,7 +9,7 @@ export default function startHttpServer (controllers: any[])
 	AttachController(app, controllers);
 
 	return {
-		server : app.listen(randomPort()),
+		server: app.listen(randomPort()),
 		app,
 	};
 }

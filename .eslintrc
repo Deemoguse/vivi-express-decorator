@@ -5,8 +5,7 @@
 		"sourceType": "module"
 	},
 	"plugins": [
-		"@typescript-eslint",
-		"align-import"
+		"@typescript-eslint"
 	],
 	"ignorePatterns": [
 		"dist/**/*.js",
@@ -18,6 +17,7 @@
 	},
 	"rules": {
 		// for `Common`:
+		"no-multi-spaces": "error",
 		"camelcase": [
 			"error",
 			{
@@ -72,9 +72,8 @@
 		"key-spacing": [
 			"error",
 			{
-				"beforeColon": true,
-				"afterColon": true,
-				"align": "colon"
+				"beforeColon": false,
+				"afterColon": true
 			}
 		],
 		// for `Array`:
@@ -98,7 +97,5 @@
 		],
 		"arrow-spacing": "error",
 		"prefer-arrow-callback": "error",
-		// for `Plugins`:
-		"align-import/align-import": "error"
 	}
 }

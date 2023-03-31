@@ -1,5 +1,5 @@
 import { getMethod, hasMethod, setMethod } from './repository';
-import type { ClassController }            from '../types/controller';
+import type { ClassController } from '../types/controller';
 
 /**
  * Produce a decorator function with the specified HTTP method.
@@ -36,7 +36,7 @@ export function Api (): Function
 	{
 		if (hasMethod(target, target[key as string]))
 		{
-			const method       = target[key as string];
+			const method = target[key as string];
 			const methodRecord = getMethod(target, method)!;
 
 			// Modify record:

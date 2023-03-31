@@ -1,13 +1,13 @@
-import { Method }                                     from '../types/method';
-import { ClassController }                            from '../types/controller';
+import { Method } from '../types/method';
+import { ClassController } from '../types/controller';
 import { Repository, MethodRecord, ControllerRecord } from '../types/repository';
 
 /**
  * Repository.
  **/
 export const repository: Repository = {
-	controllers : new Map(),
-	methods     : new Map(),
+	controllers: new Map(),
+	methods: new Map(),
 };
 
 /**
