@@ -8,7 +8,7 @@
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"strictFunctionTypes": true,
-		"target": "ES3",
+		"target": "ES5",
 		"resolveJsonModule": true,
 	},
 	"include": [ "src" ],
