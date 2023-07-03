@@ -4,7 +4,7 @@
 	"description": "A minimalistic package that supplies decorator functions for working with Express controller classes.",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
-	"types": "dist/index.d.ts",
+	"types": "dist/types/index.d.ts",
 	"files": [
 		"dist",
 		"./README.md"
