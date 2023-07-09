@@ -1,58 +1,67 @@
-import { normalize } from 'path';
-import { Router } from 'express';
+import path from 'path';
+import Express from 'express';
 import { config } from './config';
-import { getController, getMethodList } from './repository';
-import type { Express } from 'express';
-import type { ClassController } from '../types/controller';
+import type { Http } from '../types/common/common-http';
+import type { EntityController } from '../types/entities/entity-controller';
 
-export function AttachController (app: Express, controllers: ClassController[]): void
-{
-	// The router to which the methods defined as API will be registered:
-	const apiRouter = Router();
+/**
+ * Attaching controllers to an Express application instance.
+ * @param app - Express application instance.
+ * @param controllers - Controllers.
+ * @throws ReferenceError
+ */
+export function AttachControllers (app: Express.Application, controllers: EntityController[]): void {
+	const storage = config.storage.storage;
+	const apiRouter = Express.Router();
 
-	// Registration of controllers and its methods:
-	controllers.forEach(controller =>
-		{
-			const controllerData = getController(controller);
+	// A loop that attaches each transmitted controller:
+	for (const Controller of controllers) {
+		const controllerMeta = storage.get(Controller);
 
-			// If the controller was found, we register it in the
-			// transferred instance of the express application:
-			if (controllerData)
-			{
-				const controllerRouter = Router();
-				const controllerInstance = new controllerData.controller();
-				const controllerMethods = getMethodList(controller)!;
+		// Checks that check whether the passed class is registered
+		// as a controller and whether it is active accordingly:
+		if (!controllerMeta) {
+			throw new ReferenceError (`Error: сlass "${Controller.name}" is not registered as a controller.`);
+		}
+		if (!controllerMeta.isActive) {
+			continue;
+		}
 
-				// It is important to bind the controller instance to
-				// all its methods to avoid undesirable behavior:
-				controllerMethods.forEach(methodRecord =>
-					{
-						const router = methodRecord.isApi ? apiRouter : controllerRouter;
-						const routeURL = methodRecord.isApi ? `${controllerData.url}/${methodRecord.url}` : methodRecord.url;
-						const normalizeRouteURL = `/${normalize(routeURL).split(/[\\/]/).filter(w => w.match(/\w+/)).join('/')}`;
+		// Creating a controller router and creating a controller class instance:
+		const controllerRouter = Express.Router();
+		const controllerInstance = new Controller();
+		const controllerHttpMethods = Array.from(controllerMeta.httpMethods.values());
 
-						(router[methodRecord.method as keyof Router] as Function)(
-							normalizeRouteURL,
-							methodRecord.middlewares || [],
-							methodRecord.handler.bind(controllerInstance),
-						);
-					},
-				);
-
-				// Register router:
-				app.use(
-					controllerData.url,
-					controllerData.middlewares || [],
-					controllerRouter,
-				);
+		// The cycle of attaching controller methods to the router to implement http methods:
+		for (const httpMethod of controllerHttpMethods) {
+			// If the http method is not active, then skip the iteration:
+			if (!httpMethod.isActive) {
+				continue;
 			}
-			else
-			{
-				throw new ReferenceError(`Unregistered controller "${controller.name}" class.`);
-			}
-		},
-	);
 
-	// Register API router:
-	app.use(config.apiURL, apiRouter);
+			// We define the name of the HTTP method, the parent router
+			// and optimize the path to the route of the HTTP method:
+			const httpMethodInterface = httpMethod.method!.toLocaleLowerCase() as Lowercase<Http>;
+			const httpMethodParentRouter = controllerMeta.isApi || httpMethod.isApi ? apiRouter : controllerRouter;
+			const httpMethodRoutePath = controllerMeta.isApi || httpMethod.isApi ? `${controllerMeta.path}/${httpMethod.path}` : httpMethod.path!;
+			const httpMethodNormalizeRoutePath = `/${path.normalize(httpMethodRoutePath).split(/[\\/]/).filter(w => w.match(/\w+/)).join('/')}`;
+
+			// Attaching the HTTP method to the parent router:
+			httpMethodParentRouter[httpMethodInterface](
+				httpMethodNormalizeRoutePath,
+				httpMethod.middlewares,
+				httpMethod.function.bind(controllerInstance),
+			);
+		}
+
+		// Attaching the controller router to the application:
+		app.use(
+			controllerMeta.path!,
+			controllerMeta.middlewares,
+			controllerRouter
+		)
+	}
+
+	// Attaching the API controller router to the application:
+	app.use(config?.apiURL || config.prefixApi, apiRouter);
 }
