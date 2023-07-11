@@ -19,4 +19,11 @@ export interface CommonConfig {
 	 * @deprecated
 	 */
 	apiURL?: string,
+
+	/**
+	 * Lock the configuration and make it read-only.
+	 * Use this to prevent accidental configuration editing.
+	 * @readonly
+	 */
+	readonly lockConfig: (this: CommonConfig) => void
 }
