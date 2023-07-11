@@ -1,7 +1,4 @@
 import { config } from '../modules/config';
-import type { Http } from '../types/common/common-http';
-import type { EntityController } from '../types/entities/entity-controller';
-import type { EntityHttpMethod } from '../types/entities/entity-http-method';
 
 /**
  * Produce a decorator function with the specified HTTP method.

@@ -98,7 +98,6 @@ export class Storage implements StorageBase {
 	 * Get or create a controller metadata.
 	 * @param controller - The class to register as a controller.
 	 * @returns The controller metadata.
-	 * @throws ReferenceError if the same class is registered as a controller more than once.
 	 */
 	private _tryGetOrCreateController(controller: EntityController): MetaController {
 		if (!this.storage.has(controller)) {
@@ -120,7 +119,6 @@ export class Storage implements StorageBase {
 	 * @param controller - A class that is registered as a controller.
 	 * @param httpMethod - The method of the class that should be registered as a controller method.
 	 * @returns The HTTP method metadata.
-	 * @throws ReferenceError if the method is created on a class that is not registered as a controller.
 	 */
 	private _tryGetOrCreateHttpMethod(
 		controller: EntityController,
