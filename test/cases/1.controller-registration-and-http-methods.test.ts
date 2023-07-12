@@ -1,8 +1,8 @@
 import assert from 'assert';
 import request from 'supertest';
-import startHttpServer from './utils/server';
-import { hl, hld } from './utils/highlight';
-import { ControllerWithAlHttpMethods } from './controller/controller-with-all-http-methods';
+import startHttpServer from '../utils/server';
+import { hl, hld } from '../utils/highlight';
+import { ControllerWithAlHttpMethods } from '../controllers/controller-with-all-http-methods';
 
 // Testing:
 describe(hl('Registration controller and HTTP-methods. Using @Controller and @Get, @Post, @Patch, etc. decorators:'), () => {

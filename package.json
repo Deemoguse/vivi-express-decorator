@@ -12,7 +12,7 @@
 	"scripts": {
 		"eslint:fix": "eslint **/*.ts --fix --color",
 		"build": "rimraf dist/* | rollup --config rollup.config.ts",
-		"test": "jest --verbose --roots test"
+		"test": "jest --verbose --roots test test/cases"
 	},
 	"keywords": [
 		"express",
