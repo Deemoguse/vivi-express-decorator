@@ -1,4 +1,4 @@
-import { reset } from 'colors';
+import colors from 'colors';
 import type { Color } from 'colors';
 import type { Http } from '../../src/types/common/common-http';
 
@@ -13,7 +13,9 @@ interface HighlightRule {
 /**
  * List of rules.
  */
-type HighlightRules = Record<string, HighlightRule>;
+type HighlightRules =
+	| Record<string, HighlightRule>
+	;
 
 /**
  * HighlighText function Options.
@@ -53,7 +55,7 @@ export default function highlighText (text: string, options?: HighlighTextOptins
 
 		// We highlight matches according to the parameters:
 		text = text.replace(regExp, (match) => {
-			return params.reduce((acc, current) => acc[current], reset)(match);
+			return params.reduce((acc, current) => acc[current], (colors as any))(match);
 		})
 	}
 
