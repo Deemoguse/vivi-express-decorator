@@ -16,17 +16,17 @@ function inrementMiddleware (purpose: 'controller' | 'http-method'): EntityMiddl
 	}
 };
 
-@Decorators.Controller('/middlewares')
+@Decorators.Controller('/')
 @Decorators.Middleware(inrementMiddleware('controller'))
 export class ControllerWithMiddlewares {
 	@Decorators.Get('/increment-1')
-	public async increment1 (req: any, res: Decorators.Response) {
+	public async increment1 (_: any, res: Decorators.Response) {
 		res.status(200).send();
 	}
 
 	@Decorators.Get('/increment-2')
 	@Decorators.Middleware(inrementMiddleware('http-method'))
-	public async increment2 (req: any, res: Decorators.Response) {
+	public async increment2 (_: any, res: Decorators.Response) {
 		res.status(200).send();
 	}
 }
