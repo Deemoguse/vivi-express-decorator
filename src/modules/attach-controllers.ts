@@ -1,5 +1,6 @@
 import Express from 'express';
 import { config } from './config';
+import { fixPath } from '../utils/fix-path';
 import type { Http } from '../types/common/common-http';
 import type { EntityController } from '../types/entities/entity-controller';
 
@@ -43,7 +44,7 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 			const httpMethodInterface = httpMethod.method!.toLocaleLowerCase() as Lowercase<Http>;
 			const httpMethodParentRouter = controllerMeta.isApi || httpMethod.isApi ? apiRouter : controllerRouter;
 			const httpMethodRoutePath = controllerMeta.isApi || httpMethod.isApi ? `${controllerMeta.path}/${httpMethod.path}` : httpMethod.path!;
-			const httpMethodNormalizeRoutePath = `/${httpMethodRoutePath.split(/[\\/]/).filter(w => w.match(/\w+/)).join('/')}`;
+			const httpMethodNormalizeRoutePath = fixPath(httpMethodRoutePath);
 
 			// Attaching the HTTP method to the parent router:
 			httpMethodParentRouter[httpMethodInterface](
@@ -55,12 +56,12 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 
 		// Attaching the controller router to the application:
 		app.use(
-			controllerMeta.path!,
+			fixPath(controllerMeta.path!),
 			controllerMeta.middlewares,
 			controllerRouter
 		)
 	}
 
 	// Attaching the API controller router to the application:
-	app.use(config?.apiURL || config.prefixApi, apiRouter);
+	app.use(config.prefixApi, apiRouter);
 }
