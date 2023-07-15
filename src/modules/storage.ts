@@ -3,44 +3,8 @@ import type { MetaController } from '../types/meta/meta-controller';
 import type { MetaHttpMethod } from '../types/meta/meta-http-method';
 import type { EntityHttpMethod } from '../types/entities/entity-http-method';
 import type { EntityController } from '../types/entities/entity-controller';
-import type { EntityMiddleware } from '../types/entities/entity-middleware';
 import type { StorageControllersMap } from '../types/storage/storage-controllers-map';
-
-/**
- * Types of entities to which class properties can be accessed.
- */
-export type EntityTypes =
-	| 'http-method'
-	| 'controller';
-
-/**
- * Parameters required to register a class as a controller.
- */
-export type ControllerParams =
-	| Pick<MetaController, 'controller' | 'path'>;
-
-/**
- * Parameters required to register a class method as a controller method.
- */
-export type HttpMethodParams =
-	| Pick<MetaController, 'controller'>
-	& Pick<MetaHttpMethod, 'function' | 'path' | 'method'>;
-
-/**
- * Parameters required to register a middleware.
- */
-export type MiddlewareParams =
-	| { target: 'http-method' | 'controller', middleware: EntityMiddleware | EntityMiddleware[] }
-	& { controller: MetaController['controller'] }
-	& { httpMethod?: MetaHttpMethod['function'] }
-
-/**
- * Parameters required to declare the router as part of the Api.
- */
-export type ApiParams =
-	| { target: 'http-method' | 'controller' }
-	& { controller: MetaController['controller'] }
-	& { httpMethod?: MetaHttpMethod['function'] }
+import type { StorageSetApiParams, StorageSetControllerParams, StorageEntityTypes, StorageSetHttpMethodParams, StorageSetMiddlewareParams } from '../types/storage/storage-method-params';
 
 /**
  * Storage for controller metadata.
@@ -53,7 +17,7 @@ export class Storage implements StorageBase {
 	 * Register a class as a controller.
 	 * @param params - Parameters for controller registration.
 	 */
-	public setController(params: ControllerParams): void {
+	public setController(params: StorageSetControllerParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
 		controllerMeta.path = params.path;
 		controllerMeta.isActive = true;
@@ -63,7 +27,7 @@ export class Storage implements StorageBase {
 	 * Register a class method as an HTTP controller method.
 	 * @param params - Parameters for HTTP method registration.
 	 */
-	public setHttpMethod(params: HttpMethodParams): void {
+	public setHttpMethod(params: StorageSetHttpMethodParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
 		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.function);
 		httpMethodMeta.path = params.path;
@@ -75,7 +39,7 @@ export class Storage implements StorageBase {
 	 * Add middleware for the controller or HTTP controller method.
 	 * @param params - Parameters required to add middleware.
 	 */
-	public setMiddleware(params: MiddlewareParams): void {
+	public setMiddleware(params: StorageSetMiddlewareParams): void {
 		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.httpMethod);
 
 		if (Array.isArray(params.middleware)) {
@@ -89,7 +53,7 @@ export class Storage implements StorageBase {
 	 * Declare the controller or the HTTP method of the controller as part of the API.
 	 * @param params - Parameters required to declare the router as part of the API.
 	 */
-	public setIsApi(params: ApiParams): void {
+	public setIsApi(params: StorageSetApiParams): void {
 		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.httpMethod);
 		entity.isApi = true;
 	}
@@ -148,7 +112,7 @@ export class Storage implements StorageBase {
 	 * @returns The entity metadata.
 	 */
 	private _tryGetOrCreateEntity(
-		target: EntityTypes,
+		target: StorageEntityTypes,
 		controller: EntityController,
 		httpMethod?: EntityHttpMethod,
 	): MetaController | MetaHttpMethod {

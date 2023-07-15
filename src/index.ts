@@ -1,7 +1,7 @@
-
 // Export modules:
 export { config } from './modules/config';
 export { Storage } from './modules/storage';
+export { Plugin } from './modules/plugin';
 export { AttachControllers } from './modules/attach-controllers';
 
 export * from './decorators/api';

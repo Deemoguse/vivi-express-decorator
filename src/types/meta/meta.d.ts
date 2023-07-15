@@ -15,5 +15,4 @@ export interface Meta {
 
 	/** A set of middleware. */
 	middlewares: Array<EntityMiddleware>,
-
 }

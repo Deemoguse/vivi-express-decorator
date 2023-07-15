@@ -1,6 +1,7 @@
 import Express from 'express';
 import { config } from './config';
 import { fixPath } from '../utils/fix-path';
+import { pluginEventCaller } from '../utils/plugin-event-caller';
 import type { Http } from '../types/common/common-http';
 import type { EntityController } from '../types/entities/entity-controller';
 
@@ -13,6 +14,9 @@ import type { EntityController } from '../types/entities/entity-controller';
 export function AttachControllers (app: Express.Application, controllers: EntityController[]): void {
 	const storage = config.storage.storage;
 	const apiRouter = Express.Router();
+
+	// Call attach start event:
+	pluginEventCaller('attach:start', { app, storage: config.storage });
 
 	// A loop that attaches each transmitted controller:
 	for (const Controller of controllers) {
@@ -27,31 +31,40 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 			continue;
 		}
 
+		// Call before attach controller event:
+		pluginEventCaller('attach-controller:before', { app, storage: config.storage, meta: controllerMeta });
+
 		// Creating a controller router and creating a controller class instance:
 		const controllerRouter = Express.Router();
 		const controllerInstance = new Controller();
 		const controllerHttpMethods = Array.from(controllerMeta.httpMethods.values());
 
 		// The cycle of attaching controller methods to the router to implement http methods:
-		for (const httpMethod of controllerHttpMethods) {
+		for (const httpMethodMeta of controllerHttpMethods) {
 			// If the http method is not active, then skip the iteration:
-			if (!httpMethod.isActive) {
+			if (!httpMethodMeta.isActive) {
 				continue;
 			}
 
+			// Call before attach HTTP-method event:
+			pluginEventCaller('attach-http-method:before', { app, storage: config.storage, meta: httpMethodMeta });
+
 			// We define the name of the HTTP method, the parent router
 			// and optimize the path to the route of the HTTP method:
-			const httpMethodInterface = httpMethod.method!.toLocaleLowerCase() as Lowercase<Http>;
-			const httpMethodParentRouter = controllerMeta.isApi || httpMethod.isApi ? apiRouter : controllerRouter;
-			const httpMethodRoutePath = controllerMeta.isApi || httpMethod.isApi ? `${controllerMeta.path}/${httpMethod.path}` : httpMethod.path!;
+			const httpMethodInterface = httpMethodMeta.method!.toLocaleLowerCase() as Lowercase<Http>;
+			const httpMethodParentRouter = controllerMeta.isApi || httpMethodMeta.isApi ? apiRouter : controllerRouter;
+			const httpMethodRoutePath = controllerMeta.isApi || httpMethodMeta.isApi ? `${controllerMeta.path}/${httpMethodMeta.path}` : httpMethodMeta.path!;
 			const httpMethodNormalizeRoutePath = fixPath(httpMethodRoutePath);
 
 			// Attaching the HTTP method to the parent router:
 			httpMethodParentRouter[httpMethodInterface](
 				httpMethodNormalizeRoutePath,
-				httpMethod.middlewares,
-				httpMethod.function.bind(controllerInstance),
+				httpMethodMeta.middlewares,
+				httpMethodMeta.function.bind(controllerInstance),
 			);
+
+			// Call after attach HTTP-method event:
+			pluginEventCaller('attach-http-method:after', { app, storage: config.storage });
 		}
 
 		// Attaching the controller router to the application:
@@ -60,8 +73,14 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 			controllerMeta.middlewares,
 			controllerRouter
 		)
+
+		// Call after attach controller event:
+		pluginEventCaller('attach-controller:after', { app, storage: config.storage });
 	}
 
 	// Attaching the API controller router to the application:
 	app.use(config.prefixApi, apiRouter);
+
+	// Call attach end event:
+	pluginEventCaller('attach:end', { app, storage: config.storage });
 }
