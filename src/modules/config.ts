@@ -5,12 +5,12 @@ export const config: CommonConfig = {
 	storage: new Storage(),
 	prefixApi: '/api',
 	plugins: [],
-	lockConfig () {
+	lock () {
 		Object.freeze(this)
 	},
 	set (newConfig) {
 		const entries = Object.entries(newConfig);
-		entries.forEach(([ k, v ]: any[]) => config[k as keyof Omit<CommonConfig, 'lockConfig' | 'set'>] = v);
-		return this.lockConfig();
+		entries.forEach(([ k, v ]: any[]) => config[k as keyof Omit<CommonConfig, 'lock' | 'set'>] = v);
+		return this.lock();
 	},
 };

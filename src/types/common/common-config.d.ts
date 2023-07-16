@@ -24,7 +24,7 @@ export interface CommonConfig {
 	 * Use this to prevent accidental configuration editing.
 	 * @readonly
 	 */
-	readonly lockConfig: () => this is Readonly<this>,
+	readonly lock: () => this is Readonly<this>,
 
 	/**
 	 * Set config parameters.

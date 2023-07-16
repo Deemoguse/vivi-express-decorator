@@ -1,6 +1,6 @@
 import { config } from '../modules/config';
-import type { Http } from '../types/common/common-http';
 import { pluginEventCaller } from './plugin-event-caller';
+import type { Http } from '../types/common/common-http';
 import type { StorageSetHttpMethodParams } from '../types/storage/storage-method-params';
 
 /**

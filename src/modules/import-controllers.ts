@@ -5,7 +5,7 @@ import { EntityController } from '../types/entities/entity-controller';
  * Auxiliary tool for importing controllers according to a given glob pattern.
  * @param path - Glob path pattern.
  */
-export async function ImportControllers (pattern: string): Promise<any> {
+export async function ImportControllers (pattern: string): Promise<EntityController[]> {
 	const paths = await glob(pattern, { absolute: true });
 	const controllers: EntityController[] = [];
 
