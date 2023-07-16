@@ -28,24 +28,36 @@ interface HighlighTextOptins<Rules extends HighlightRules = any> {
 };
 
 // All the rules for matching matches in strings:
-const rules = {
+const rules: HighlightRules = {
 	decorators: {
 		match: /@[\w]+/,
-		params: [ 'bold', 'yellow' ]
+		params: [ 'bold', 'yellow' ],
 	},
 	keywords: {
 		match: [ 'Connect', 'Delete', 'Get', 'Head', 'Options', 'Patch', 'Post', 'Put', 'Trace', 'prefixApi' ] as ('prefixApi' | Http)[],
-		params: [ 'bold', 'yellow' ]
+		params: [ 'bold', 'yellow' ],
 	},
-} satisfies HighlightRules;
+	classes: {
+		match: [ 'Plugin' ],
+		params: [ 'bold', 'green' ],
+	},
+	methods: {
+		match: [ 'ImportControllers', 'AttachControllers' ],
+		params: [ 'bold', 'blue' ],
+	},
+	config: {
+		match: /config\.[\w]+/,
+		params: [ 'bold', 'magenta' ],
+	},
+};
 
 /**
  * Highlight matches described in {@link rules}
  */
 export default function highlighText (text: string, options?: HighlighTextOptins<typeof rules>): string {
-	// We process the text according to the rules:
+	// Process the text according to the rules:
 	for (const [ key, rule ] of Object.entries(rules)) {
-		// We form a complete array of color matching rules for matches:
+		// Form a complete array of color matching rules for matches:
 		const params = [ ...rule.params, ...(options?.extends[key as keyof typeof rules] || []) ];
 
 		// Defining expressions to search for matches:

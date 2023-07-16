@@ -6,10 +6,15 @@ import { ControllerWithAlHttpMethods } from '../controllers/controller-with-all-
 
 // Testing:
 describe(hl('Registration controller and HTTP-methods. Using @Controller and @Get, @Post, @Patch, etc. decorators:'), () => {
-	const app = createApp([ ControllerWithAlHttpMethods ]);
+
+	// Test AttachControllers
+	it(hld('AttachControllers testing .Only classes can be attached to the app.'), () => {
+		assert.throws(() => createApp([ 0, 'asdsa', {}, () => {}, function () {}, [] ]), { name: 'ReferenceError' });
+	})
 
 	// Test HTTPS's methods:
 	for (const method of ControllerWithAlHttpMethods.methods) {
+		const app = createApp([ ControllerWithAlHttpMethods ]);
 		const methodName = method.slice(0, 1).toUpperCase() + method.slice(1);
 		it(hld(`Testing the ${methodName} method.`), async () => {
 			const response = (await request(app)[method](`/${method}`));
