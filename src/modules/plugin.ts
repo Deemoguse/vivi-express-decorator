@@ -11,7 +11,10 @@ export class Plugin<Config extends object = any> implements PluginBase<Config> {
 
 	// Plugin config and configuration method:
 	public config: Config = {} as Config;
-	public configurate = (config: Config) => this.config = config;
+	public configurate (config: Partial<Config>) {
+		this.config = config as Config;
+		return this;
+	};
 
 	/**
 	 * Declare an event listener for the plugin

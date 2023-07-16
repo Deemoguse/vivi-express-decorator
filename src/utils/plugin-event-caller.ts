@@ -7,6 +7,6 @@ import type { PluginEventMap, PluginEventNames } from '../types/plugin/plugin-ev
  * @param params - Event params.
  */
 export function pluginEventCaller<T extends PluginEventNames> (event: T, params: PluginEventMap[T]): void {
-	const events = config.plugins.flatMap(plugin => plugin.callEvent);
+	const events = config.plugins.flatMap(plugin => plugin.callEvent.bind(plugin));
 	events.forEach(cb => cb(event, params));
 }
