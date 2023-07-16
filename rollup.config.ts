@@ -23,7 +23,7 @@ export default defineConfig([
 				exports: 'auto',
 			},
 		],
-		external: [ 'path', 'express' ],
+		external: [ 'path', 'express', 'glob' ],
 		plugins: [ cjs(), ts({ exclude: 'test' }), terser() ],
 	},
 

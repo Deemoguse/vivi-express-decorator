@@ -1,4 +1,3 @@
-import path from 'path';
 import { glob } from 'glob';
 import { EntityController } from '../types/entities/entity-controller';
 
@@ -7,14 +6,13 @@ import { EntityController } from '../types/entities/entity-controller';
  * @param path - Glob path pattern.
  */
 export async function ImportControllers (pattern: string): Promise<any> {
-	console.log(pattern);
-	// const paths = await glob();
-	// const controllers: EntityController[] = [];
+	const paths = await glob(pattern, { absolute: true });
+	const controllers: EntityController[] = [];
 
-	// for await (const controllerPath of paths) {
-	// 	const controller = await import(controllerPath);
-	// 	controllers.push(controller.default);
-	// }
+	for await (const controllerPath of paths) {
+		const controller = await import(controllerPath);
+		controllers.push(controller.default);
+	}
 
-	// return controllers;
+	return controllers;
 }
