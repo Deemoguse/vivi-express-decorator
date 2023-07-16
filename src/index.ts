@@ -2,6 +2,7 @@
 export { config } from './modules/config';
 export { Storage } from './modules/storage';
 export { Plugin } from './modules/plugin';
+export { ImportControllers } from './modules/import-controllers';
 export { AttachControllers } from './modules/attach-controllers';
 
 export * from './decorators/api';
