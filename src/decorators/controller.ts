@@ -8,6 +8,10 @@ import type { StorageSetControllerParams } from '../types/storage/storage-method
  * @param path - route path.
  */
 export function Controller (path: string) {
+	if (typeof path !== 'string') {
+		throw new TypeError ('Error: the `path` argument must be a string');
+	}
+
 	return (controller: EntityController): void => {
 		const params: StorageSetControllerParams = { path, controller };
 		pluginEventCaller('set-controller:before', { storage: config.storage, params });

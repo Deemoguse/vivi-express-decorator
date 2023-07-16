@@ -11,7 +11,12 @@ export async function ImportControllers (pattern: string): Promise<EntityControl
 
 	for await (const controllerPath of paths) {
 		const controller = await import(controllerPath);
-		controllers.push(controller.default);
+
+		if (controller.default) {
+			controllers.push(controller.default);
+		} else {
+			throw new ReferenceError('Erro: the module should have a default export');
+		}
 	}
 
 	return controllers;

@@ -10,4 +10,5 @@ export interface StorageBase {
 	setController(params: StorageSetControllerParams): void;
 	setHttpMethod(params: StorageSetHttpMethodParams): void;
 	setMiddleware(params: StorageSetMiddlewareParams): void;
+	removeInactiveControllers(): void;
 }

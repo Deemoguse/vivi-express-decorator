@@ -9,6 +9,10 @@ import type { StorageSetHttpMethodParams } from '../types/storage/storage-method
  **/
 export function factoryMethodDecorator (method: Http) {
 	return (path: string) => {
+		if (typeof path !== 'string') {
+			throw new TypeError ('Error: the `path` argument must be a string');
+		}
+
 		return (target: any, name: string, descriptor: PropertyDescriptor) => {
 			const params: StorageSetHttpMethodParams = { controller: target.constructor, function: descriptor.value, path, method };
 			pluginEventCaller('set-http-method:before', { storage: config.storage, params });
