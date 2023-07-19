@@ -17,3 +17,4 @@ export type { StorageBase } from './types/storage/storage-base'
 export type { CommonConfig } from './types/common/common-config';
 export type { MetaController } from './types/meta/meta-controller';
 export type { MetaHttpMethod } from './types/meta/meta-http-method';
+export type { PluginEventMap } from './types/plugin/plugin-events-map';
