@@ -37,10 +37,6 @@
 			"error"
 		],
 		"keyword-spacing": "error",
-		"brace-style": [
-			"error",
-			"allman"
-		],
 		// for `Variable`:
 		"no-var": "error",
 		"prefer-const": "warn",

@@ -6,31 +6,31 @@ import dts from 'rollup-plugin-dts';
 import { terser } from 'rollup-plugin-terser';
 
 export default defineConfig([
-	// Compile Typescript files.
+	// Compile Typescript files:
 	{
 		input: 'src/index.ts',
 		output: [
 			{
 				file: packageJson.main,
 				format: 'cjs',
-				sourcemap: true,
+				sourcemap: false,
 				exports: 'auto',
 			},
 			{
 				file: packageJson.module,
 				format: 'esm',
-				sourcemap: true,
+				sourcemap: false,
 				exports: 'auto',
 			},
 		],
+		external: [ 'path', 'express', 'glob' ],
 		plugins: [ cjs(), ts({ exclude: 'test' }), terser() ],
-		external: [],
 	},
 
-	// Compile Decloration file.
+	// Compile Decloration file:
 	{
 		input: 'src/index.ts',
-		output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+		output: [{ file: packageJson.types, format: 'esm' }],
 		plugins: [ dts() ],
 	},
 ]);
