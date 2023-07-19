@@ -224,7 +224,7 @@ import { config } from '@wambata/express-decorators';
 import RouteMap from './route-map';
 
 config.set({
-	plugins: [ new RoutesMap() ]
+	plugins: [ RoutesMap ]
 });
 ```
 
