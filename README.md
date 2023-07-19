@@ -87,7 +87,9 @@ In this particular example, the `Api` decorator is applied to the controller, so
 If the `Api` decorator is applied to the HTTP method, then only it will be available at the path `/api/post/<route_path>`. The `Middleware` decorator behaves similarly. You can apply all the decorators in a sequence that is convenient for you.
 
 ## ImportControllers
-This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. For instance:
+> this method requires the controller to be exported by default.
+
+This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. this  For instance:
 
 ```ts
 import { AttachControllers, ImportControllers } from '@wambata/express-controllers';
