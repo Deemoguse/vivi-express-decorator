@@ -142,6 +142,8 @@ All plugins in Wambata Express-decorators are based on the event system. Each pl
 
 A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called. To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
 
+* * * * * * * *
+
 The `Plugin` class in Wambata Express-decorators is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
 
 ### Plugin Use Examples
@@ -154,7 +156,6 @@ import { config, MyPlugin } from '@wambata/express-decorators';
 config.set({
 	plugins: [new MyPlugin()]
 });
-config.lock();
 
 // Import of controllers should be after adding plugins:
 import PostController from './controllers/post.controller.ts';
@@ -182,8 +183,6 @@ bootstrap();
 ```
 
 In this example, the `ImportControllers` function automatically imports all controllers that match the `'**/*.controller.ts'` pattern. Thus, all controllers are imported after the plugin initialization, and the plugin events are called in the correct order.
-
-Plugins are a powerful tool for customizing and extending the functionality of Wambata Express-decorators. With plugins, you can change the behavior of the library as you see fit, adapting it to the specific needs of your application.
 
 ### Example of a Plugin
 
@@ -229,9 +228,7 @@ config.set({
 });
 ```
 
-Now, `MyPlugin` will receive notifications of the `'set-controller:before'` and `'set-controller:after'` events and react accordingly.
-
-These features make the `Plugin` class a powerful tool for extending and customizing the behavior of Wambata Express-decorators according to the specific needs of your application.
+* * * * * * * * 
 
 ### Class: `Plugin`
 
