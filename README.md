@@ -4,7 +4,7 @@ This is a minimalist package that provides decorator functions for working with 
 
 ## Features
 
-WAMBATA Express-decorators offers a variety of features designed to facilitate the development of Express applications in a modern, class-based style:
+`@wambata/express-decorator` offers a variety of features designed to facilitate the development of Express applications in a modern, class-based style:
 - **Decorator Support**: This library brings the power of decorators to Express.js, allowing you to expressively annotate your class-based controllers and their methods with relevant metadata.
 - **Non-invasive**: Original classes and methods remain untouched, keeping your codebase clean and free from modifications. The library works by creating metadata associated with your classes and methods, not by modifying them directly.
 - **Middleware and API Declaration**: Middleware and API paths can be declared at both controller and method levels, enabling granular control over the request-handling pipeline.
@@ -87,7 +87,9 @@ In this particular example, the `Api` decorator is applied to the controller, so
 If the `Api` decorator is applied to the HTTP method, then only it will be available at the path `/api/post/<route_path>`. The `Middleware` decorator behaves similarly. You can apply all the decorators in a sequence that is convenient for you.
 
 ## ImportControllers
-This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. For instance:
+> this method requires the controller to be exported by default.
+
+This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. this  For instance:
 
 ```ts
 import { AttachControllers, ImportControllers } from '@wambata/express-controllers';
@@ -132,17 +134,19 @@ Configuration elements:
 - `lock()`: A method to lock the configuration and switch it to "read-only" mode. Use this method to prevent accidental configuration changes.
 - `set(config)`: A method to set configuration parameters. After using this method, the configuration object becomes read-only.
 
-Use the `config` object to adjust the behavior of Wambata Express-decorators according to your application's needs. If you have any questions about using the `config` object, don't hesitate to ask for help on our support forum.
+Use the `config` object to adjust the behavior of `@wambata/express-decorator` according to your application's needs. If you have any questions about using the `config` object, don't hesitate to ask for help on our support forum.
 
 ## Plugins and Their Use
 
-Plugins in Wambata Express-decorators are tools that allow you to extend and customize the library's functionality. They can be used to add new features, change the behavior of existing components, and interact with the request handling process at various stages of the application lifecycle.
+Plugins in `@wambata/express-decorator` are tools that allow you to extend and customize the library's functionality. They can be used to add new features, change the behavior of existing components, and interact with the request handling process at various stages of the application lifecycle.
 
-All plugins in Wambata Express-decorators are based on the event system. Each plugin can subscribe to specific events that are called at certain points during the application's execution. When an event occurs, all handlers associated with that event are called.
+All plugins in `@wambata/express-decorator` are based on the event system. Each plugin can subscribe to specific events that are called at certain points during the application's execution. When an event occurs, all handlers associated with that event are called.
 
 A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called. To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
 
-The `Plugin` class in Wambata Express-decorators is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
+* * * * * * * *
+
+The `Plugin` class in `@wambata/express-decorator` is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
 
 ### Plugin Use Examples
 
@@ -154,7 +158,6 @@ import { config, MyPlugin } from '@wambata/express-decorators';
 config.set({
 	plugins: [new MyPlugin()]
 });
-config.lock();
 
 // Import of controllers should be after adding plugins:
 import PostController from './controllers/post.controller.ts';
@@ -182,8 +185,6 @@ bootstrap();
 ```
 
 In this example, the `ImportControllers` function automatically imports all controllers that match the `'**/*.controller.ts'` pattern. Thus, all controllers are imported after the plugin initialization, and the plugin events are called in the correct order.
-
-Plugins are a powerful tool for customizing and extending the functionality of Wambata Express-decorators. With plugins, you can change the behavior of the library as you see fit, adapting it to the specific needs of your application.
 
 ### Example of a Plugin
 
@@ -225,13 +226,11 @@ import { config } from '@wambata/express-decorators';
 import RouteMap from './route-map';
 
 config.set({
-	plugins: [ new RoutesMap() ]
+	plugins: [ RoutesMap ]
 });
 ```
 
-Now, `MyPlugin` will receive notifications of the `'set-controller:before'` and `'set-controller:after'` events and react accordingly.
-
-These features make the `Plugin` class a powerful tool for extending and customizing the behavior of Wambata Express-decorators according to the specific needs of your application.
+* * * * * * * * 
 
 ### Class: `Plugin`
 
@@ -239,17 +238,13 @@ These features make the `Plugin` class a powerful tool for extending and customi
 
 The `Plugin` class accepts a Config template which represents the configuration interface of your plugin.
 
-#### Properties:
-
-1. **events**: This property is a `PluginEventSet` object which stores all declared event listeners for this plugin instance.
-
-2. **config**: This property holds the plugin's configuration as specified by the `Config` template. By default, it is an empty object.
-
 #### Methods:
+1. `configurate(config)`: This method lets you set the plugin's configuration. It receives a `Partial<Config>` object and returns the plugin instance itself for chaining.
+2. `on(event, cb)`: This method declares an event listener for the plugin. It takes two parameters: the event name, and the event callback function. This method does not return anything.
 
-1. **configurate(config)**: This method lets you set the plugin's configuration. It receives a `Partial<Config>` object and returns the plugin instance itself for chaining.
-
-2. **on(event, cb)**: This method declares an event listener for the plugin. It takes two parameters: the event name, and the event callback function. This method does not return anything.
+#### Properties:
+1. **events**: This property is a `PluginEventSet` object which stores all declared event listeners for this plugin instance.
+2. **config**: This property holds the plugin's configuration as specified by the `Config` template. By default, it is an empty object.
 
 #### Event Handling
 
@@ -260,7 +255,6 @@ This way, you can have specific actions or side effects when different events oc
 #### Plugin Event Call Order
 
 During the application execution, plugin events are called in the following order:
-
 1. `attach:start`
 2. `attach-controller:before`
 3. `attach-controller:after`
@@ -269,7 +263,6 @@ During the application execution, plugin events are called in the following orde
 6. `attach:end`
 
 The events listed below do not have a strict order of call. The order of their call will depend on the way they are applied:
-
 - `set-controller:before`
 - `set-controller:after`
 - `set-http-method:before`
@@ -283,7 +276,7 @@ When using plugins, consider this sequence of events to correctly plan and contr
 
 ## Creating Your Own Metadata Storage Class
 
-The WAMBATA Express-decorators library provides a built-in `Storage` class that serves to store metadata about controllers and their methods. However, depending on the needs of your application, you may want to replace this class with your own.
+The `@wambata/express-decorator` library provides a built-in `Storage` class that serves to store metadata about controllers and their methods. However, depending on the needs of your application, you may want to replace this class with your own.
 
 There are various reasons why you might want to use your own class for metadata storage:
 
