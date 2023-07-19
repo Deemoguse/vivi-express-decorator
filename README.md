@@ -142,29 +142,7 @@ All plugins in Wambata Express-decorators are based on the event system. Each pl
 
 A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called. To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
 
-### Plugin Event Call Order
-
-During the application execution, plugin events are called in the following order:
-
-1. `attach:start`
-2. `attach-controller:before`
-3. `attach-controller:after`
-4. `attach-http-method:before`
-5. `attach-http-method:after`
-6. `attach:end`
-
-The events listed below do not have a strict order of call. The order of their call will depend on the way they are applied:
-
-- `set-controller:before`
-- `set-controller:after`
-- `set-http-method:before`
-- `set-http-method:after`
-- `set-middleware:before`
-- `set-middleware:after`
-- `set-api:before`
-- `set-api:after`
-
-When using plugins, consider this sequence of events to correctly plan and control plugin behavior.
+The `Plugin` class in Wambata Express-decorators is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
 
 ### Plugin Use Examples
 
@@ -206,6 +184,102 @@ bootstrap();
 In this example, the `ImportControllers` function automatically imports all controllers that match the `'**/*.controller.ts'` pattern. Thus, all controllers are imported after the plugin initialization, and the plugin events are called in the correct order.
 
 Plugins are a powerful tool for customizing and extending the functionality of Wambata Express-decorators. With plugins, you can change the behavior of the library as you see fit, adapting it to the specific needs of your application.
+
+### Example of a Plugin
+
+Here is an example of a simple plugin:
+
+```ts
+import { join } from 'path';
+import { writeFileSync } from 'fs';
+import { Plugin, config } from '@wambata/express-decorators';
+
+const schema: string[] = [];
+const RouteMap = new Plugin();
+
+RouteMap.on('attach:end', ({ storage }) => {
+	storage.storage.forEach(controller => {
+		const controllerPath = controller.path!;
+
+		controller.httpMethods.forEach(httpMethod => {
+			const isApi = controller.isApi || httpMethod.isApi;
+			const routePath = join(isApi ? config.prefixApi : '', controllerPath, httpMethod.path!);
+			schema.push(`${controller.controller.name} | ${httpMethod.method} | ${routePath}`);
+		})
+
+		schema.push(`\n${'-'.repeat(40)}\n`);
+	});
+
+	writeFileSync('route-map.txt', schema.join('\n'));
+})
+
+export default RouteMap;
+```
+
+In this example, we subscribe to the `attach:end` event, which is called when all controllers have been attached. Reacting to this event, we turn to the metadata repository and create a file based on them that will help us navigate the routes of the project.
+
+To activate the plugin, you need to add it to the configuration:
+
+```ts
+import { config } from '@wambata/express-decorators';
+import RouteMap from './route-map';
+
+config.set({
+	plugins: [ new RoutesMap() ]
+});
+```
+
+Now, `MyPlugin` will receive notifications of the `'set-controller:before'` and `'set-controller:after'` events and react accordingly.
+
+These features make the `Plugin` class a powerful tool for extending and customizing the behavior of Wambata Express-decorators according to the specific needs of your application.
+
+### Class: `Plugin`
+
+#### Template: Config
+
+The `Plugin` class accepts a Config template which represents the configuration interface of your plugin.
+
+#### Properties:
+
+1. **events**: This property is a `PluginEventSet` object which stores all declared event listeners for this plugin instance.
+
+2. **config**: This property holds the plugin's configuration as specified by the `Config` template. By default, it is an empty object.
+
+#### Methods:
+
+1. **configurate(config)**: This method lets you set the plugin's configuration. It receives a `Partial<Config>` object and returns the plugin instance itself for chaining.
+
+2. **on(event, cb)**: This method declares an event listener for the plugin. It takes two parameters: the event name, and the event callback function. This method does not return anything.
+
+#### Event Handling
+
+The event system in the Plugin class operates on two simple concepts: `event` and `callback`. You declare an event listener using the `on` method, providing the event name and a callback function. When an event of the declared name occurs, the callback function gets invoked with the provided parameters.
+
+This way, you can have specific actions or side effects when different events occur during the lifecycle of your application, like before setting a controller, after setting a controller, before attaching a controller, and so on.
+
+#### Plugin Event Call Order
+
+During the application execution, plugin events are called in the following order:
+
+1. `attach:start`
+2. `attach-controller:before`
+3. `attach-controller:after`
+4. `attach-http-method:before`
+5. `attach-http-method:after`
+6. `attach:end`
+
+The events listed below do not have a strict order of call. The order of their call will depend on the way they are applied:
+
+- `set-controller:before`
+- `set-controller:after`
+- `set-http-method:before`
+- `set-http-method:after`
+- `set-middleware:before`
+- `set-middleware:after`
+- `set-api:before`
+- `set-api:after`
+
+When using plugins, consider this sequence of events to correctly plan and control plugin behavior.
 
 ## Creating Your Own Metadata Storage Class
 
