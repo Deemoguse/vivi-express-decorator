@@ -3,14 +3,14 @@ import { PluginEventMap, PluginEventNames } from "./plugin-events-map";
 /**
  * Event callback function.
  */
-export type PluginEventCallback<Params, Config = unknown> =
+export type PluginEventCallback<Params, Config = any> =
 	| ((params: Params, pluginConfig: Config) => void)
 	;
 
 /**
  * Array of event callback functions.
  */
-export type PluginEventCallbackSet<T extends PluginEventNames, Config = unknown> =
+export type PluginEventCallbackSet<T extends PluginEventNames, Config = any> =
 	| Array<PluginEventCallback<PluginEventMap[T], Config>>
 	;
 
@@ -18,6 +18,6 @@ export type PluginEventCallbackSet<T extends PluginEventNames, Config = unknown>
  * The type of object where the key is the name of the event,
  * and the value is an array of its callback functions.
  */
-export type PluginEventSet<Config = unknown> =
+export type PluginEventSet<Config = any> =
 	| { [K in PluginEventNames]?: PluginEventCallbackSet<K, Config> }
 	;

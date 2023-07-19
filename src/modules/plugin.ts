@@ -21,7 +21,7 @@ import type { PluginEventMap, PluginEventNames } from '../types/plugin/plugin-ev
  * ```
  * @template Config - Plugin configuration interface.
  */
-export class Plugin<Config extends object | unknown = unknown> implements PluginBase<Config> {
+export class Plugin<Config extends object = any> implements PluginBase<Config> {
 	// Plugin event set:
 	private events: PluginEventSet<Config> = {};
 
