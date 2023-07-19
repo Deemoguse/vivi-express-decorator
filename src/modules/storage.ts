@@ -59,6 +59,17 @@ export class Storage implements StorageBase {
 	}
 
 	/**
+	 * The module should have a default export
+	 */
+	public removeInactiveControllers (): void {
+		Array.from(this.storage.keys()).forEach(controller => {
+			if (!this.storage.get(controller)?.isActive) {
+				this.storage.delete(controller);
+			}
+		})
+	}
+
+	/**
 	 * Get or create a controller metadata.
 	 * @param controller - The class to register as a controller.
 	 * @returns The controller metadata.

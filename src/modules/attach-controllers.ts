@@ -7,6 +7,19 @@ import type { EntityController } from '../types/entities/entity-controller';
 
 /**
  * Attaching controllers to an Express application instance.
+ * ```ts
+ * import Express from 'express';
+ * import { AttachControllers, ImportControllers } from '@wambata/express-decorators';
+ *
+ * // Create app instance:
+ *	const app = Express();
+ *
+ * // Attach controllers:
+ * AttachControllers(app, await ImportControllers('controllers/*.contrller.ts'));
+ *
+ * // Start server:
+ * app.listen(3000, () => console.log('ok!'));
+ * ```
  * @param app - Express application instance.
  * @param controllers - Controllers.
  * @throws ReferenceError
@@ -14,6 +27,9 @@ import type { EntityController } from '../types/entities/entity-controller';
 export function AttachControllers (app: Express.Application, controllers: EntityController[]): void {
 	const storage = config.storage.storage;
 	const apiRouter = Express.Router();
+
+	// Remove all inactive controllers:
+	config.storage.removeInactiveControllers();
 
 	// Call attach start event:
 	pluginEventCaller('attach:start', { app, storage: config.storage });

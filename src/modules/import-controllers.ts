@@ -3,10 +3,20 @@ import { EntityController } from '../types/entities/entity-controller';
 
 /**
  * Auxiliary tool for importing controllers according to a given glob pattern.
- * @param path - Glob path pattern.
+ * ```ts
+ * import { AttachControllers, ImportControllers } from '@wambata/express-decorators';
+ *
+ * // (for upper-level await):
+ * AttachControllers(app, await ImportControllers('controllers/*.contrller.ts'));
+ *
+ * // The usual use of promises:
+ * ImportControllers('controllers/*.contrller.ts')
+ *    .then((controllers) => AttachControllers(app, controllers));
+ * ```
+ * @param relativePattern - Glob path pattern.
  */
-export async function ImportControllers (pattern: string): Promise<EntityController[]> {
-	const paths = await glob(pattern, { absolute: true });
+export async function ImportControllers (relativePattern: string): Promise<EntityController[]> {
+	const paths = await glob(relativePattern, { absolute: true });
 	const controllers: EntityController[] = [];
 
 	for await (const controllerPath of paths) {

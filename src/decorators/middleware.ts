@@ -5,6 +5,7 @@ import type { StorageSetMiddlewareParams } from '../types/storage/storage-method
 
 /**
  * Adding middleware for the controller or HTTP controller method.
+ * @param middleware - function or array of functions.
  */
 export function Middleware (middleware: EntityMiddleware | EntityMiddleware[]) {
 	return (target: any, name?: string, descriptor?: PropertyDescriptor): void => {
