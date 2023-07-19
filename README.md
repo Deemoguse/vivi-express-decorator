@@ -84,7 +84,7 @@ export default class PostController {
 }
 ```
 In this particular example, the `Api` decorator is applied to the controller, so the HTTP method `get` in the `PostController` class, and all other child routes, will be available at the path `/api/post/<route_path>` instead of `/post/<route_path>`.
-If the `Api` decorator is applied to the HTTP method, then only it will be available at the path `/api/post/<route_path>`. The `Middleware` decorator behaves similarly.
+If the `Api` decorator is applied to the HTTP method, then only it will be available at the path `/api/post/<route_path>`. The `Middleware` decorator behaves similarly. You can apply all the decorators in a sequence that is convenient for you.
 
 ## ImportControllers
 This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. For instance:
