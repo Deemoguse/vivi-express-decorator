@@ -144,10 +144,6 @@ All plugins in `@wambata/express-decorator` are based on the event system. Each 
 
 A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called. To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
 
-* * * * * * * *
-
-The `Plugin` class in `@wambata/express-decorator` is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
-
 ### Plugin Use Examples
 
 1. Import controllers after adding plugins:
@@ -231,6 +227,8 @@ config.set({
 ```
 
 * * * * * * * * 
+
+The `Plugin` class in `@wambata/express-decorator` is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
 
 ### Class: `Plugin`
 
