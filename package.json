@@ -5,6 +5,9 @@
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
 	"types": "dist/types/index.d.ts",
+	"engines": {
+		"node": "*"
+	},
 	"files": [
 		"dist",
 		"./README.md"
