@@ -1,6 +1,13 @@
 import type { PluginBase } from '../plugin/plugin-base';
 import type { StorageBase } from '../storage/storage-base';
 
+/**
+ * Configuration parameters for the 'set` method.
+ */
+export type SetConfigOption =
+	| Partial<Omit<CommonConfig, 'set' | 'lock'>>
+	;
+
 export interface CommonConfig {
 	/**
 	 * A static class that implements metadata {@link Storage} logic.
@@ -24,7 +31,7 @@ export interface CommonConfig {
 	 * Use this to prevent accidental configuration editing.
 	 * @readonly
 	 */
-	readonly lock: () => this is Readonly<this>,
+	readonly lock: () => void,
 
 	/**
 	 * Set config parameters.
@@ -32,5 +39,5 @@ export interface CommonConfig {
 	 * @param config - Config params.
 	 * @readonly
 	 */
-	readonly set: (config: Partial<Omit<CommonConfig, 'set' | 'lockConfig'>>) => void,
- }
+	readonly set: <T extends SetConfigOption>(config: T) => void,
+}
