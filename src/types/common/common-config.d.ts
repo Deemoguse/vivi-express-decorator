@@ -39,5 +39,5 @@ export interface CommonConfig {
 	 * @param config - Config params.
 	 * @readonly
 	 */
-	readonly set: <T extends SetConfigOption>(config: T) => void,
+	readonly set: (config: SetConfigOption) => void,
 }
