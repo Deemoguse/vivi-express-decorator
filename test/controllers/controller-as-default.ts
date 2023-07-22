@@ -1,1 +1,0 @@
-export { СontrollerDecoratorsInDifferentSequence as default } from './сontroller-with-methods-with-decorators-in-different-sequence';
