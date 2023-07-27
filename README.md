@@ -72,12 +72,12 @@ For convenient code organization, there are `Api` and `Middleware` decorators. T
 ```ts
 import { Controller, Get, Middleware, Api, Responce, Request } from '@wambata/express-decorators';
 
-@Api('/api')
+@Api()
 @Controller('/post')
 export default class PostController {
 
-  @Middleware(someMiddleware)
-  @Get('/:id')
+	@Middleware(someMiddleware)
+	@Get('/:id')
 	public async get (res: Responce, req: Request) {
 		// Logic ....
 	}
