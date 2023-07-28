@@ -1,13 +1,12 @@
 import colors from 'colors';
 import type { Color } from 'colors';
-import type { Http } from '../../src/types/common/common-http';
 
 /**
  * Description of the matching color rule in a string:
  */
 interface HighlightRule {
-	match: (string)[] | RegExp,
-	params: (keyof Color)[],
+	match: RegExp,
+	style: Color,
 }
 
 /**
@@ -24,59 +23,82 @@ interface HighlighTextOptins<Rules extends HighlightRules = any> {
 	/**
 	 * Expand the highlight settings.
 	 */
-	extends: { [K in keyof Rules]?: HighlightRule['params'] }
+	extends?: { [K in keyof Rules]?: HighlightRule['style'] }
+
+	/**
+	 * Expand the highlight settings for inline syntax.
+	 */
+	extendsInlineSyntax?: HighlightRule['style']
 };
 
 // All the rules for matching matches in strings:
 const rules: HighlightRules = {
+	objectProperties: {
+		match: /\w+(?=\.\w+)|\.(\w+)/g,
+		style: colors.bold.yellow,
+	},
 	decorators: {
-		match: /@[\w]+/,
-		params: [ 'bold', 'yellow' ],
+		match: /@[\w]+/g,
+		style: colors.bold.yellow,
 	},
 	keywords: {
-		match: [ 'Connect', 'Delete', 'Get', 'Head', 'Options', 'Patch', 'Post', 'Put', 'Trace', 'prefixApi' ] as ('prefixApi' | Http)[],
-		params: [ 'bold', 'yellow' ],
+		match: /ImportControllers|AttachControllers|Connect|Delete|Get|Head|Options|Patch|Post|Put|Trace|prefixApi/g,
+		style: colors.bold.yellow,
 	},
 	classes: {
-		match: [ 'Plugin' ],
-		params: [ 'bold', 'green' ],
+		match: /([A-Z]\w+)?Error|Plugin|Storage|Map/g,
+		style: colors.bold.green,
 	},
-	methods: {
-		match: [ 'ImportControllers', 'AttachControllers' ],
-		params: [ 'bold', 'blue' ],
-	},
-	config: {
-		match: /config\.[\w]+/,
-		params: [ 'bold', 'magenta' ],
+
+	// Uniq:
+	storageMethods: {
+		match: /storage|setIsApi|setMiddleware|setController|setHttpMethod|removeInactiveControllers/g,
+		style: colors.bold.yellow,
 	},
 };
+
 
 /**
  * Highlight matches described in {@link rules}
  */
-export default function highlighText (text: string, options?: HighlighTextOptins<typeof rules>): string {
+export default function highlighText (input: string, options?: HighlighTextOptins<typeof rules>): string {
+	const inlineStylesMap: Record<number, string> = {};
+
+	// Processing an inline sub-color request:
+	input = input.replace(/<([^<>]+)\|([^<>]+)>/g, (_, text, styles: string) => {
+		const id = Math.ceil(Math.random() * Date.now());
+		const style = styles.split('-').reduce((acc, current) => acc[current], colors as any);
+		const extendStyle = options?.extendsInlineSyntax;
+		const coloredText = style(text);
+
+		// Add mark to map:
+		inlineStylesMap[id] = extendStyle ? extendStyle(coloredText) : coloredText;
+
+		// Return id:
+		return id.toString();
+	});
+
 	// Process the text according to the rules:
-	for (const [ key, rule ] of Object.entries(rules)) {
-		// Form a complete array of color matching rules for matches:
-		const params = [ ...rule.params, ...(options?.extends[key as keyof typeof rules] || []) ];
+	for (const key in rules) {
+		const rule = rules[key];
+		const extendStyle = options?.extends?.[key];
+		const coloredText = input.replace(rule.match, (match) => rule.style(match));
+		input = extendStyle ? extendStyle(coloredText) : coloredText;
+	}
 
-		// Defining expressions to search for matches:
-		const regExp = Array.isArray(rule.match)
-			? new RegExp(`(${rule.match.join('|')})`)
-			: new RegExp(rule.match, 'g');
-
-		// We highlight matches according to the parameters:
-		text = text.replace(regExp, (match) => {
-			return params.reduce((acc, current) => acc[current], (colors as any))(match);
-		})
+	// Replacing labels with the result of an inline color query:
+	for (const id in inlineStylesMap) {
+		const style = inlineStylesMap[id];
+		input = input.replace(id, style);
 	}
 
 	// Return a string with highlighted matches:
-	return text;
+	return input;
 }
 
 // Export shortcuts:
 export const hl = highlighText;
 export const hld = (text: string) => highlighText(text, {
-	extends: Object.fromEntries(Object.keys(rules).map((k) => [k, [ 'dim' ]]))
-})
+	extends: Object.fromEntries(Object.keys(rules).map((k) => [ k, colors.dim ])),
+	extendsInlineSyntax: colors.dim,
+});
