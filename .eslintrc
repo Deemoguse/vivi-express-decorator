@@ -33,9 +33,6 @@
 		],
 		"prefer-template": "error",
 		"template-curly-spacing": "error",
-		"curly": [
-			"error"
-		],
 		"keyword-spacing": "error",
 		// for `Variable`:
 		"no-var": "error",
