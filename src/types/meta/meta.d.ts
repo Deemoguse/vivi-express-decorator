@@ -1,4 +1,4 @@
-import { EntityMiddleware } from '../entities/entity-middleware';
+import type { EntityMiddleware } from '../entities/entity-middleware';
 
 /**
  * Interface describing the metadata.

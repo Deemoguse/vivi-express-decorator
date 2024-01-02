@@ -1,5 +1,5 @@
 import type { Meta } from './meta';
-import type { Http } from '../common/common-http';
+import type { CommonHttp } from '../common/common-http';
 import type { EntityHttpMethod } from '../entities/entity-http-method';
 
 /**
@@ -10,5 +10,5 @@ export interface MetaHttpMethod extends Meta {
 	function: EntityHttpMethod,
 
 	/** Method. */
-	method?: Http,
+	method?: CommonHttp,
 }

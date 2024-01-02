@@ -1,4 +1,4 @@
-import Express from 'express';
+import type Express from 'express';
 import type { StorageBase } from '../storage/storage-base';
 import type { MetaController } from '../meta/meta-controller';
 import type { MetaHttpMethod } from '../meta/meta-http-method';

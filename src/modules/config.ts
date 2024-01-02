@@ -1,5 +1,5 @@
 import { Storage } from './storage';
-import type { CommonConfig } from '../types/common/common-config';
+import type { CommonConfig, SetConfigOption } from '../types/common/common-config';
 
 /**
  * Library сonfiguration.
@@ -14,11 +14,11 @@ export const config: CommonConfig = {
 	prefixApi: '/api',
 	plugins: [],
 	lock () {
-		Object.freeze(this)
+		Object.freeze(this);
 	},
 	set (newConfig) {
 		const entries = Object.entries(newConfig);
-		entries.forEach(([ k, v ]: any[]) => config[k as keyof Omit<CommonConfig, 'lock' | 'set'>] = v);
+		entries.forEach(([ k, v ]: any[]) => this[k as keyof SetConfigOption] = v);
 		return this.lock();
 	},
 };

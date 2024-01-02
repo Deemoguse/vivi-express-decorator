@@ -2,7 +2,7 @@ import Express from 'express';
 import { config } from './config';
 import { fixPath } from '../utils/fix-path';
 import { pluginEventCaller } from '../utils/plugin-event-caller';
-import type { Http } from '../types/common/common-http';
+import type { CommonHttp } from '../types/common/common-http';
 import type { EntityController } from '../types/entities/entity-controller';
 
 /**
@@ -22,7 +22,7 @@ import type { EntityController } from '../types/entities/entity-controller';
  * ```
  * @param app - Express application instance.
  * @param controllers - Controllers.
- * @throws ReferenceError
+ * @throws {ReferenceError} The class is not registered as a countertroller.
  */
 export function AttachControllers (app: Express.Application, controllers: EntityController[]): void {
 	const storage = config.storage.storage;
@@ -67,7 +67,7 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 
 			// We define the name of the HTTP method, the parent router
 			// and optimize the path to the route of the HTTP method:
-			const httpMethodInterface = httpMethodMeta.method!.toLocaleLowerCase() as Lowercase<Http>;
+			const httpMethodInterface = httpMethodMeta.method!.toLocaleLowerCase() as Lowercase<CommonHttp>;
 			const httpMethodParentRouter = controllerMeta.isApi || httpMethodMeta.isApi ? apiRouter : controllerRouter;
 			const httpMethodRoutePath = controllerMeta.isApi || httpMethodMeta.isApi ? `${controllerMeta.path}/${httpMethodMeta.path}` : httpMethodMeta.path!;
 			const httpMethodNormalizeRoutePath = fixPath(httpMethodRoutePath);
@@ -87,8 +87,8 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 		app.use(
 			fixPath(controllerMeta.path!),
 			controllerMeta.middlewares,
-			controllerRouter
-		)
+			controllerRouter,
+		);
 
 		// Call after attach controller event:
 		pluginEventCaller('attach-controller:after', { app, storage: config.storage });

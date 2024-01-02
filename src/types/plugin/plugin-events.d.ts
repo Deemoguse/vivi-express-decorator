@@ -1,4 +1,4 @@
-import { PluginEventMap, PluginEventNames } from "./plugin-events-map";
+import type { PluginEventMap, PluginEventNames } from './plugin-events-map';
 
 /**
  * Event callback function.
