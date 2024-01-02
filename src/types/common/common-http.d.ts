@@ -1,7 +1,7 @@
 /**
  * HTTP methods.
  */
-export type Http =
+export type CommonHttp =
 	| 'Connect'
 	| 'Options'
 	| 'Get'

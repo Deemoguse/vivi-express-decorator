@@ -1,5 +1,5 @@
-import type { PluginEventCallback } from "./plugin-events";
-import type { PluginEventMap, PluginEventNames } from "./plugin-events-map";
+import type { PluginEventCallback } from './plugin-events';
+import type { PluginEventMap, PluginEventNames } from './plugin-events-map';
 
 /**
  * A set of required fields for storage implementation.
