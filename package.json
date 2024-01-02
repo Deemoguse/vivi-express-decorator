@@ -20,7 +20,7 @@
 		"test:integration": "jest --verbose --roots test/cases/integration",
 		"test:perfomance": "jest --verbose --roots test/cases/perfomance",
 		"test": "npm run build:test && npm run test:modules && npm run test:integration && npm run test:perfomance && rimraf dist",
-		"publish": "npm run test && npm run build:prod & np --no-tests"
+		"publish": "npm run test && npm run build:prod && np --no-tests"
 	},
 	"keywords": [
 		"express",
