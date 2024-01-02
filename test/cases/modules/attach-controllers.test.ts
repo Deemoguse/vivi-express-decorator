@@ -1,7 +1,6 @@
 import Express from 'express';
 import request from 'supertest';
 import { $, hl, hld } from '../../utils';
-import { AttachControllers } from '../../../src';
 
 @$.Controller('/')
 class MyController {
@@ -23,7 +22,7 @@ describe(hl('Testing AttachControllers function. Using @Controller and @Get deco
 		const app = Express();
 
 		// Attach controllers:
-		AttachControllers(app, [ MyController ]);
+		$.AttachControllers(app, [ MyController ]);
 
 		// Test response:
 		test(hld('The HTTP method is initialized and returns 200 status.'), async () => {
@@ -38,7 +37,9 @@ describe(hl('Testing AttachControllers function. Using @Controller and @Get deco
 
 		// Test error type:
 		test(hld('An attempt to attach an unregistered one to a controller causes an ReferenceError.'), async () => {
-			expect(() => AttachControllers(app, [ OtherController ])).toThrow(ReferenceError);
+			expect(() => $.AttachControllers(app, [ OtherController ])).toThrow(ReferenceError);
 		});
 	});
 });
+
+/** @group modules */
