@@ -42,17 +42,21 @@ const rules: HighlightRules = {
 		style: colors.bold.yellow,
 	},
 	keywords: {
-		match: /ImportControllers|AttachControllers|Connect|Delete|Get|Head|Options|Patch|Post|Put|Trace|prefixApi/g,
+		match: /\b(ImportControllers|AttachControllers|prefixApi)\b/g,
 		style: colors.bold.yellow,
 	},
+	httpMethods: {
+		match: /\b(?<!@)(Get|Put|Post|Patch|Delete|Head|Trace|Options|Connect)\b/g,
+		style: colors.bold.magenta,
+	},
 	classes: {
-		match: /([A-Z]\w+)?Error|Plugin|Storage|Map/g,
+		match: /\b(([A-Z]\w+)?Error|Plugin|Storage|Map)\b/g,
 		style: colors.bold.green,
 	},
 
 	// Uniq:
 	storageMethods: {
-		match: /storage|setIsApi|setMiddleware|setController|setHttpMethod|removeInactiveControllers/g,
+		match: /\b(storage|setIsApi|setMiddleware|setController|setHttpMethod|removeInactiveControllers)\b/g,
 		style: colors.bold.yellow,
 	},
 };

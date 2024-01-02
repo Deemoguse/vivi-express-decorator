@@ -1,9 +1,10 @@
 import express from 'express';
-import { AttachControllers } from '../../src';
+import request from 'supertest';
+import { $ } from './index';
 
 export function createApp (controllers: any[])
 {
 	const app = express();
-	AttachControllers(app, controllers);
-	return app;
+	$.AttachControllers(app, controllers);
+	return request(app);
 }

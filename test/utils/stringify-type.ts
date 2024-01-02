@@ -7,7 +7,8 @@ export function stringifyType (any: any): string {
 		case 'boolean': {
 			return any ? 'true' : 'false';
 		}
-		case 'bigint': case 'number': {
+		case 'bigint':
+		case 'number': {
 			return any.toString();
 		}
 		case 'string': {
