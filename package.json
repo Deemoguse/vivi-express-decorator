@@ -14,8 +14,8 @@
 	],
 	"scripts": {
 		"eslint:fix": "eslint **/*.ts --fix --color",
-		"build:prod": "rimraf dist | cross-env rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
-		"build:test": "rimraf dist | cross-env MODE=test rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+		"build:prod": "rimraf dist & cross-env rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+		"build:test": "rimraf dist & cross-env MODE=test rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
 		"test:modules": "jest --verbose --roots test/cases/modules",
 		"test:integration": "jest --verbose --roots test/cases/integration",
 		"test:perfomance": "jest --verbose --roots test/cases/perfomance",

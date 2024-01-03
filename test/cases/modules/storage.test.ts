@@ -39,6 +39,33 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 		});
 	});
 
+	// This test verifies the supplied metadata storage class:
+	describe(hl('- <Controller:|underline-bold> An attempt to re-register the class should throw an error:'), () => {
+		test('Re-registration, but the parameters match.', () => {
+			const storage = new $.Storage();
+
+			expect(() => {
+				// Register class:
+				storage.setController({ controller: MyController, path: '/' });
+
+				// Re-register class:
+				storage.setController({ controller: MyController, path: '/' });
+			}).toThrow(ReferenceError);
+		});
+
+		test('Re-registration, but the parameters are different.', () => {
+			const storage = new $.Storage();
+
+			expect(() => {
+				// Register class:
+				storage.setController({ controller: MyController, path: '/' });
+
+				// Re-register class:
+				storage.setController({ controller: MyController, path: '/' });
+			}).toThrow(ReferenceError);
+		});
+	});
+
 	// A set of metadata data specific to each method call:
 	([ 'setIsApi', 'setMiddleware', 'setHttpMethod' ] as const).forEach(method => {
 		describe(hl(`- <Controller:|underline-bold> Checking that ${method} register the class as a controller, if this has not happened before:`), () => {
@@ -124,6 +151,53 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 		test(hld('The method was registered as an <active|green-bold> HTTP-method of the controller.'), () => {
 			const registeredHttpMethodMeta = getRegisteredHttpMethodMeta(storage)!;
 			expect(registeredHttpMethodMeta.isActive).toBe(true);
+		});
+	});
+
+	// This test verifies the supplied metadata storage class:
+	describe(hl('- <Http-Method:|underline-bold> An attempt to re-register the method should throw an error:'), () => {
+		test('Re-registration, but the parameters match.', () => {
+			const storage = new $.Storage();
+
+			expect(() => {
+				// Register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/get',
+					function: MyController.prototype.method,
+					method: 'Get',
+				});
+
+				// Re-register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/get',
+					function: MyController.prototype.method,
+					method: 'Get',
+				});
+			}).toThrow(ReferenceError);
+		});
+
+		test('Re-registration, but the parameters are different.', () => {
+			const storage = new $.Storage();
+
+			expect(() => {
+				// Register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/get',
+					function: MyController.prototype.method,
+					method: 'Get',
+				});
+
+				// Re-register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/post',
+					function: MyController.prototype.method,
+					method: 'Post',
+				});
+			}).toThrow(ReferenceError);
 		});
 	});
 
