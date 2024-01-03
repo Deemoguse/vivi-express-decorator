@@ -19,6 +19,11 @@ export class Storage implements StorageBase {
 	 */
 	public setController (params: StorageSetControllerParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
+
+		if (controllerMeta.path) {
+			throw new ReferenceError(`Error: This class has already been registered as controller with "${controllerMeta.path}"`);
+		}
+
 		controllerMeta.path = params.path;
 		controllerMeta.isActive = true;
 	}
@@ -32,7 +37,7 @@ export class Storage implements StorageBase {
 		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.function);
 
 		if (httpMethodMeta.path && httpMethodMeta.method) {
-			throw new ReferenceError(`Error: This method has already been registered as: ${httpMethodMeta.method} - "${httpMethodMeta.path}"`);
+			throw new ReferenceError(`Error: This method has already been registered as ${httpMethodMeta.method} with "${httpMethodMeta.path}"`);
 		}
 
 		httpMethodMeta.path = params.path;
