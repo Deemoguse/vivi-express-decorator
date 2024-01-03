@@ -17,8 +17,13 @@ export class Storage implements StorageBase {
 	 * Register a class as a controller.
 	 * @param params - Parameters for controller registration.
 	 */
-	public setController(params: StorageSetControllerParams): void {
+	public setController (params: StorageSetControllerParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
+
+		if (controllerMeta.path) {
+			throw new ReferenceError(`Error: This class has already been registered as controller with "${controllerMeta.path}"`);
+		}
+
 		controllerMeta.path = params.path;
 		controllerMeta.isActive = true;
 	}
@@ -27,9 +32,14 @@ export class Storage implements StorageBase {
 	 * Register a class method as an HTTP controller method.
 	 * @param params - Parameters for HTTP method registration.
 	 */
-	public setHttpMethod(params: StorageSetHttpMethodParams): void {
+	public setHttpMethod (params: StorageSetHttpMethodParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
 		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.function);
+
+		if (httpMethodMeta.path && httpMethodMeta.method) {
+			throw new ReferenceError(`Error: This method has already been registered as ${httpMethodMeta.method} with "${httpMethodMeta.path}"`);
+		}
+
 		httpMethodMeta.path = params.path;
 		httpMethodMeta.method = params.method;
 		httpMethodMeta.isActive = true;
@@ -39,7 +49,7 @@ export class Storage implements StorageBase {
 	 * Add middleware for the controller or HTTP controller method.
 	 * @param params - Parameters required to add middleware.
 	 */
-	public setMiddleware(params: StorageSetMiddlewareParams): void {
+	public setMiddleware (params: StorageSetMiddlewareParams): void {
 		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.httpMethod);
 
 		if (Array.isArray(params.middleware)) {
@@ -53,7 +63,7 @@ export class Storage implements StorageBase {
 	 * Declare the controller or the HTTP method of the controller as part of the API.
 	 * @param params - Parameters required to declare the router as part of the API.
 	 */
-	public setIsApi(params: StorageSetApiParams): void {
+	public setIsApi (params: StorageSetApiParams): void {
 		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.httpMethod);
 		entity.isApi = true;
 	}
@@ -66,7 +76,7 @@ export class Storage implements StorageBase {
 			if (!this.storage.get(controller)?.isActive) {
 				this.storage.delete(controller);
 			}
-		})
+		});
 	}
 
 	/**
@@ -74,7 +84,7 @@ export class Storage implements StorageBase {
 	 * @param controller - The class to register as a controller.
 	 * @returns The controller metadata.
 	 */
-	private _tryGetOrCreateController(controller: EntityController): MetaController {
+	private _tryGetOrCreateController (controller: EntityController): MetaController {
 		if (!this.storage.has(controller)) {
 			this.storage.set(controller, {
 				isActive: false,
@@ -95,7 +105,7 @@ export class Storage implements StorageBase {
 	 * @param httpMethod - The method of the class that should be registered as a controller method.
 	 * @returns The HTTP method metadata.
 	 */
-	private _tryGetOrCreateHttpMethod(
+	private _tryGetOrCreateHttpMethod (
 		controller: EntityController,
 		httpMethod: EntityHttpMethod,
 	): MetaHttpMethod {
@@ -122,7 +132,7 @@ export class Storage implements StorageBase {
 	 * @param httpMethod - HTTP controller method.
 	 * @returns The entity metadata.
 	 */
-	private _tryGetOrCreateEntity(
+	private _tryGetOrCreateEntity (
 		target: StorageEntityTypes,
 		controller: EntityController,
 		httpMethod?: EntityHttpMethod,
