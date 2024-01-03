@@ -1,6 +1,6 @@
 {
 	"name": "@wambata/express-decorators",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "A minimalistic package that supplies decorator functions for working with Express controller classes.",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
