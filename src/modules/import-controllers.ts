@@ -14,6 +14,7 @@ import { EntityController } from '../types/entities/entity-controller';
  *    .then((controllers) => AttachControllers(app, controllers));
  * ```
  * @param relativePattern - Glob path pattern.
+ * @throws {ReferenceError} The module has no export by default.
  */
 export async function ImportControllers (relativePattern: string): Promise<EntityController[]> {
 	const paths = await glob(relativePattern, { absolute: true });
@@ -25,7 +26,7 @@ export async function ImportControllers (relativePattern: string): Promise<Entit
 		if (controller.default) {
 			controllers.push(controller.default);
 		} else {
-			throw new ReferenceError('Erro: the module should have a default export');
+			throw new ReferenceError('Error: the module should have a default export');
 		}
 	}
 

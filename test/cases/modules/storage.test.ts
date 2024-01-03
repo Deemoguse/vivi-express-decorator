@@ -127,6 +127,51 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 		});
 	});
 
+	// This test verifies the supplied metadata storage class:
+	describe(hl('- <Http-Method:|underline-bold> An attempt to re-register the method should throw an error:'), () => {
+		const storage = new $.Storage();
+
+		test('Re-registration, but the parameters match.', () => {
+			expect(() => {
+				// Register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/get',
+					function: MyController.prototype.method,
+					method: 'Get',
+				});
+
+				// Re-register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/Post',
+					function: MyController.prototype.method,
+					method: 'Post',
+				});
+			}).toThrow(ReferenceError);
+		});
+
+		test('Re-registration, but the parameters are different.', () => {
+			expect(() => {
+				// Register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/get',
+					function: MyController.prototype.method,
+					method: 'Get',
+				});
+
+				// Re-register method:
+				storage.setHttpMethod({
+					controller: MyController,
+					path: '/get',
+					function: MyController.prototype.method,
+					method: 'Get',
+				});
+			}).toThrow(ReferenceError);
+		});
+	});
+
 	// A set of metadata data specific to each method call:
 	([ 'setIsApi', 'setMiddleware' ] as const).forEach(method => {
 		describe(hl(`- <Http-Method:|underline-bold> Сhecking ${method}, register the class method as an HTTP method if it wasn't there before.`), () => {
