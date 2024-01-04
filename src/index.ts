@@ -20,24 +20,3 @@ export type { CommonConfig } from './types/common/common-config';
 export type { MetaController } from './types/meta/meta-controller';
 export type { MetaHttpMethod } from './types/meta/meta-http-method';
 export type { PluginEventMap } from './types/plugin/plugin-events-map';
-
-class BaseController {
-	protected readonly _description: Description = {}
-
-	@Get('/description')
-	public async getNamespaceDescription (req: Request, res: Response) {
-		req.s(this._description);
-	}
-}
-
-@Controller('/user')
-class UserController extends BaseController {
-	protected readonly _description: Description = {
-		 // Some description ...
-	}
-
-	@Get('/some')
-	public async someMethod (req: Request, res: Response) {
-		 // Some logic ...
-	}
-}
