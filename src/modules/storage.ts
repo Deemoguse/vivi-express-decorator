@@ -19,9 +19,8 @@ export class Storage implements StorageBase {
 	 */
 	public setController (params: StorageSetControllerParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
-
 		if (controllerMeta.path) {
-			throw new ReferenceError(`Error: This class has already been registered as controller with "${controllerMeta.path}"`);
+			throw new ReferenceError('Error: This class has already been registered');
 		}
 
 		controllerMeta.path = params.path;
@@ -37,7 +36,7 @@ export class Storage implements StorageBase {
 		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.function);
 
 		if (httpMethodMeta.path && httpMethodMeta.method) {
-			throw new ReferenceError(`Error: This method has already been registered as ${httpMethodMeta.method} with "${httpMethodMeta.path}"`);
+			throw new ReferenceError('Error: This method has already been registered');
 		}
 
 		httpMethodMeta.path = params.path;
@@ -72,11 +71,11 @@ export class Storage implements StorageBase {
 	 * The module should have a default export
 	 */
 	public removeInactiveControllers (): void {
-		Array.from(this.storage.keys()).forEach(controller => {
+		for (const controller of this.storage.keys()) {
 			if (!this.storage.get(controller)?.isActive) {
 				this.storage.delete(controller);
 			}
-		});
+		}
 	}
 
 	/**
@@ -86,14 +85,12 @@ export class Storage implements StorageBase {
 	 */
 	private _tryGetOrCreateController (controller: EntityController): MetaController {
 		if (!this.storage.has(controller)) {
-			this.storage.set(controller, {
-				isActive: false,
-				isApi: false,
-				path: undefined,
-				controller,
-				httpMethods: new Map(),
-				middlewares: [],
-			});
+			const baseController = Object.getPrototypeOf(controller);
+			const controllerMeta = this.storage.has(baseController)
+				? this._createControllerMetaObjectWithInheritHttpMethods(controller, baseController)
+				: this._createBaseControllerMetaObject(controller);
+
+			this.storage.set(controller, controllerMeta);
 		}
 
 		return this.storage.get(controller)!;
@@ -110,18 +107,11 @@ export class Storage implements StorageBase {
 		httpMethod: EntityHttpMethod,
 	): MetaHttpMethod {
 		const controllerMeta = this._tryGetOrCreateController(controller);
+		const httpMethodMeta = this._createBaseHttpMethodMetaObject(httpMethod);
 
 		if (!controllerMeta.httpMethods.has(httpMethod)) {
-			controllerMeta.httpMethods.set(httpMethod, {
-				isActive: false,
-				isApi: false,
-				path: undefined,
-				function: httpMethod,
-				method: undefined,
-				middlewares: [],
-			});
+			controllerMeta.httpMethods.set(httpMethod, httpMethodMeta);
 		}
-
 		return controllerMeta.httpMethods.get(httpMethod)!;
 	}
 
@@ -140,5 +130,54 @@ export class Storage implements StorageBase {
 		return target === 'http-method'
 			? this._tryGetOrCreateHttpMethod(controller, httpMethod!)
 			: this._tryGetOrCreateController(controller);
+	}
+
+	/**
+	 * Create base controller metadata.
+	 * @param controller - Origin controller class.
+	 */
+	private _createBaseControllerMetaObject (controller: EntityController): MetaController {
+		return {
+			isActive: false,
+			isApi: false,
+			path: undefined,
+			controller,
+			httpMethods: new Map(),
+			middlewares: [],
+		};
+	}
+
+	/**
+	 * Create a controller metadata object with the inherited metadata of the HTTP methods of the base controller class.
+	 * @param controller - Origin controller class.
+	 * @param baseController - Base controller class.
+	 * @returns
+	 */
+	private _createControllerMetaObjectWithInheritHttpMethods (
+		controller: EntityController,
+		baseController: EntityController,
+	): MetaController {
+		const controllerMeta = this._createBaseControllerMetaObject(controller);
+		const baseControllerMeta = this._tryGetOrCreateController(baseController);
+
+		// Inherit HTTP method metadata:
+		controllerMeta.httpMethods = new Map(baseControllerMeta.httpMethods);
+
+		return controllerMeta;
+	}
+
+	/**
+	 * Create base HTTP method metadata.
+	 * @param controller - Origin controller class.
+	 */
+	private _createBaseHttpMethodMetaObject (httpMethod: EntityHttpMethod): MetaHttpMethod {
+		return {
+			isActive: false,
+			isApi: false,
+			path: undefined,
+			function: httpMethod,
+			method: undefined,
+			middlewares: [],
+		};
 	}
 }
