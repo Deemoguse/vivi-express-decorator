@@ -11,7 +11,7 @@ import type { StorageSetApiParams, StorageSetControllerParams, StorageEntityType
  */
 export class Storage implements StorageBase {
 	// Storage for storing controller metadata:
-	public storage: StorageControllersMap = new Map();
+	public readonly storage: StorageControllersMap = new Map();
 
 	/**
 	 * Register a class as a controller.

@@ -1,95 +1,248 @@
-# WAMBATA. Express-decorators.
+# WAMBATA. Express-decorators
 
-This is a minimalist package that provides decorator functions for working with Express controller classes.
+**WAMBATA** is a modern, minimalist library for Express.js, designed to simplify the development of web applications using decorators. The library is a set of powerful tools that allow developers to expressively and effectively structure their applications, applying the concepts of classes and decorators within the architecture of Express.
 
-## Features
+## Key Features
 
-`@wambata/express-decorator` offers a variety of features designed to facilitate the development of Express applications in a modern, class-based style:
-- **Decorator Support**: This library brings the power of decorators to Express.js, allowing you to expressively annotate your class-based controllers and their methods with relevant metadata.
-- **Non-invasive**: Original classes and methods remain untouched, keeping your codebase clean and free from modifications. The library works by creating metadata associated with your classes and methods, not by modifying them directly.
-- **Middleware and API Declaration**: Middleware and API paths can be declared at both controller and method levels, enabling granular control over the request-handling pipeline.
-- **Configurable**: The behavior of the library can be customized through a configuration object. This includes setting a custom metadata storage class, specifying a prefix for API routes, and adding plugins.
-- **Plugin System**: The library includes a robust plugin system, allowing you to add custom functionality and modify the behavior of the library as needed.
-- **Automatic Controller Importing**: The library provides a function that automatically imports all controllers matching a provided glob pattern, simplifying the setup process.
-- **Customizable Metadata Storage**: You can implement your own metadata storage class, giving you full control over how metadata is stored and retrieved. This is particularly useful for integrating with other systems, adding additional functions, or modifying the behavior of existing ones.
+- **Decorators for Express.js**: `@wambata/express-decorators` introduces the power and flexibility of decorators to Express, simplifying the annotation of controller classes and methods for a clear and organized code structure.
+- **Non-invasive Approach**: The library creates metadata for classes and methods without making changes to existing code, ensuring the purity and integrity of your code base.
+- **Granular Control Over Middleware and API**: Allows the declaration of Middleware and API at the level of methods and controllers, providing fine control over request processing.
+- **High Configurability**: Offers extended customization options to meet the specific requirements of applications.
+- **Plugin System**: Includes a flexible and expandable plugin system, enhancing the functional capabilities and adaptability of the library.
+- **Decorator Inheritance**: Supports the inheritance of decorators when extending controller classes, ensuring seamless and intuitive functionality extension.
+- **High Processing Speed**: Demonstrates outstanding performance, registering and attaching 500 controllers in 45 ms with a margin of error of 5 ms.
 
-* * * * *
+These features make `@wambata/express-decorators` a powerful tool for developing web applications on Express.js, suitable for both beginners and experienced developers looking to improve the structure and support of their projects.
 
 ## Installation
-To install, run the following command:
+
+Install the `@wambata/express-decorators` library via npm or yarn:
+
 ```bash
-$ npm i --save-dev @wambata/express-decorators
+npm install @wambata/express-decorators
 ```
 
-## Main Modules:
-This table describes the main modules of the library.
-> **`*`** – Marking of an optional (auxiliary) module.
+or
 
-| Module | Purpose |
-| :- | :- |
-| `config` | An object with library configuration parameters. |
-| `Controller` | Decorator for controller registration. It can be applied only to classes. It takes the path for the parent route as an argument. |
-| `Get`, `Post`, `Put`, etc. | Decorators of HTTP methods. They can be applied only to class methods. They take the path relative to the parent route as an argument. |
-| `Api` | Decorator for defining a method or controller in the group of `Api` routes. |
-| `Middleware` | Decorator for defining middleware for the controller or HTTP method. |
-| `AttachController` | A method for attaching controllers to an application instance. |
-| `*ImportControllers` | An asynchronous method for importing controllers by the passed _glob_ pattern. |
+```bash
+yarn add @wambata/express-decorators
+```
 
-## Usage:
-The `Controller` and `Get` decorators are used to declare a route for receiving data. The `Responce` and `Request` interfaces are re-exported from `express`, so you don't have to make an additional import of these types directly from `express`:
-```ts
-import { Controller, Get, Responce, Request } from '@wambata/express-decorators';
+## Quick Start
+
+To get started quickly with the `@wambata/express-decorators` library, here are the key steps to integrate it into your Express.js application.
+
+### Creating a Controller
+
+Use the `Controller` and `Get` decorators to declare routes. The `Response` and `Request` interfaces are re-exported from `express`, allowing you to avoid additional imports of these types directly from `express`:
+
+```typescript
+import { Controller, Get, Response, Request } from '@wambata/express-decorators';
 
 @Controller('/post')
 export default class PostController {
-
-	@Get('/:id')
-	public async get (res: Responce, req: Request) {
-		// Logic ....
-	}
+    @Get('/:id')
+    public async get(req: Request, res: Response) {
+        // Request handling logic...
+    }
 }
 ```
 
+### Applying the Controller to an Application Instance
+
 To apply this controller to an application instance, use the `AttachControllers` function:
-```ts
+
+```typescript
 import Express from 'express';
 import { AttachControllers } from '@wambata/express-controllers';
 
 // Importing controllers:
 import PostController from './controllers/post.controller.ts';
 
-// Attachment:
+// Attaching controllers:
 const app = Express();
-AttachControllers(app, [ PostController ]);
+AttachControllers(app, [PostController]);
 
 // Starting the server:
 app.listen(3000);
 ```
 
-## Declaring API Methods and Applying Middlewares:
-For convenient code organization, there are `Api` and `Middleware` decorators. This group of decorators can be applied both to controllers and to HTTP methods. Here's an example of usage:
+These examples demonstrate the basic setup of your application using `@wambata/express-decorators` to organize routes and handle requests.
 
-```ts
-import { Controller, Get, Middleware, Api, Responce, Request } from '@wambata/express-decorators';
+## Main Modules
+
+Below is a description of the key modules of the `@wambata/express-decorators` library.
+
+| Module                     | Purpose                                                                                                                     |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| `config`                   | An object with library configuration parameters.                                                                            |
+| `Controller`               | A decorator for controller registration. Applied only to classes. Takes the path for the parent route as an argument.       |
+| `Get`, `Post`, `Put`, etc. | Decorators for HTTP methods. Applied only to class methods. They take the path relative to the parent route as an argument. |
+| `Api`                      | A decorator used for grouping controllers and methods into the `Api` category, simplifying the organization of API routes.  |
+| `Middleware`               | A decorator for defining middleware for the controller or HTTP method.                                                      |
+| `AttachController`         | A method for attaching controllers to an application instance.                                                              |
+| `ImportControllers`        | An asynchronous method for importing controllers by a passed _glob_ pattern.                                                |
+| `Plugin`                   | A class for creating and managing plugins, allowing for the expansion of the library's functional capabilities.             |
+
+In addition to providing core modules, the `@wambata/express-decorators` library also re-exports key interfaces and types from `express` for ease of use. This includes:
+
+- **`Request` and `Response`**: Standard request and response interfaces from `express`, available directly through `@wambata/express-decorators`. This reduces the need for additional imports and makes the code more compact.
+- **`NextFunction`**: A type used for middleware functions in `express`. It facilitates working with middleware while maintaining type consistency throughout the application.
+- **Additional Types**: The library also exports various useful types and interfaces that will be beneficial for developers.
+
+These interfaces and types simplify integration with `express` and reduce the number of necessary imports, making your code cleaner and more organized.
+
+## Using the Api Decorator
+
+The `Api` decorator is convenient for code organization and can be applied to both controllers and HTTP methods. This decorator helps to group routes and simplifies structuring the API in your application.
+
+### Applying Api to a Controller
+
+When the `Api` decorator is applied to a controller, all methods within that controller automatically become part of the API group. For example:
+
+```typescript
+import { Controller, Get, Api, Response, Request } from '@wambata/express-decorators';
 
 @Api()
 @Controller('/post')
 export default class PostController {
-
-	@Middleware(someMiddleware)
-	@Get('/:id')
-	public async get (res: Responce, req: Request) {
-		// Logic ....
-	}
+    @Get('/:id')
+    public async get(req: Request, res: Response) {
+        // Request handling logic...
+    }
 }
 ```
-In this particular example, the `Api` decorator is applied to the controller, so the HTTP method `get` in the `PostController` class, and all other child routes, will be available at the path `/api/post/<route_path>` instead of `/post/<route_path>`.
-If the `Api` decorator is applied to the HTTP method, then only it will be available at the path `/api/post/<route_path>`. The `Middleware` decorator behaves similarly. You can apply all the decorators in a sequence that is convenient for you.
+
+In this example, the `Api` decorator is applied to the `PostController` controller. This means that the HTTP `get` method and all other child routes will be available at the path `/api/post/:id` instead of `/post/:id`.
+
+### Applying Api to a Controller Method
+
+If the `Api` decorator is applied directly to a method in the controller, only that method will be included in the API group. For example:
+
+```typescript
+import { Controller, Get, Api, Response, Request } from '@wambata/express-decorators';
+
+@Controller('/post')
+export default class PostController {
+    @Api()
+    @Get('/:id')
+    public async get(req: Request, res: Response) {
+        // Request handling logic...
+    }
+}
+```
+
+In this case, only the `get` method will be accessible at the path `/api/post/:id`. This allows for more flexible organization of your API by defining precise entry points into the API group.
+
+## Using the Middleware Decorator
+
+The `Middleware` decorator can be applied at the controller class level and at its method level.
+
+### Applying Api to a Controller Method
+
+In this example, the middleware attached to the controller class will be executed each time the controller's HTTP child method is accessed.
+
+```typescript
+import { Controller, Get, Middleware, Response, Request } from '@wambata/express-decorators';
+
+@Controller('/post')
+@Middleware(someMiddleware)
+export default class PostController {
+    @Get('/:id')
+    public async get(req: Request, res: Response) {
+        // Request handling logic...
+    }
+}
+```
+
+The middleware attached to the controller's HTTP method will execute each time this method is accessed.
+
+```typescript
+import { Controller, Get, Middleware, Response, Request } from '@wambata/express-decorators';
+
+@Controller('/post')
+export default class PostController {
+    @Get('/:id')
+    @Middleware(someMiddleware)
+    public async get(req: Request, res: Response) {
+        // Request handling logic...
+    }
+}
+```
+
+- - - - - -
+
+Additionally, the 'Middleware' decorator can accept an array of functions, which can improve code structure and modularity.
+
+
+```typescript
+import { Controller, Get, Middleware, Response, Request } from '@wambata/express-decorators';
+
+@Controller('/post')
+@Middleware([ someMiddleware1, someMiddleware2 ])
+export default class PostController {
+	// ...
+}
+```
+
+## Controller Extending
+
+By default, when extending a controller, decorators applied to it and its methods are not inherited due to the peculiarities of the implementation of decorators in TypeScript and Babel. However, the `@wambata/express-decorators` library implements this feature by accessing the class prototype.
+
+You just need to use the native `extended` syntax to extend the desired controller class, getting all its methods with stored decorators.
+
+```typescript
+@Controller('/user')
+class UserController {
+    @Get('/some')
+    public async someMethod (req: Request, res: Response) {
+        // Some logic ...
+    }
+}
+
+@Controller('/admin')
+class AdminController extends UserController {
+    @Get('/some')
+    public async someAdminMethod (req: Request, res: Response) {
+        // Some admin logic ...
+    }
+}
+```
+
+In addition, an extensible class does not necessarily have to be registered as a controller, allowing you to add flexibility to your project by creating base classes.
+
+```typescript
+class BaseController {
+    protected readonly _description: Description = {}
+
+    @Get('/description')
+    public async getNamespaceDescription (req: Request, res: Response) {
+	     res.send(this._description);
+    }
+}
+
+@Controller('/user')
+class UserController extends BaseController {
+    protected readonly _description: Description = {
+        // Some description ...
+	 }
+
+    @Get('/some')
+    public async someMethod (req: Request, res: Response) {
+        // Some logic ...
+    }
+}
+```
+
+> [!WARNING]
+> It is important to cancel that decorators applied to a controller class are not intentionally inherited. In other words, if you extend a controller class, you will have to reapply the `Controller`, `Middleware` and/or `Api` decorators to it.
 
 ## ImportControllers
-> this method requires the controller to be exported by default.
 
 This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. this  For instance:
+
+> [!TIP]
+> this method requires the controller to be exported by default.
 
 ```ts
 import { AttachControllers, ImportControllers } from '@wambata/express-controllers';
@@ -142,7 +295,11 @@ Plugins in `@wambata/express-decorator` are tools that allow you to extend and c
 
 All plugins in `@wambata/express-decorator` are based on the event system. Each plugin can subscribe to specific events that are called at certain points during the application's execution. When an event occurs, all handlers associated with that event are called.
 
-A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called. To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
+> [!WARNING]
+> A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called.
+
+> [!TIP]
+> To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
 
 ### Plugin Use Examples
 
@@ -152,7 +309,7 @@ A feature of plugins in this library is that the order of controller imports mat
 import { config, MyPlugin } from '@wambata/express-decorators';
 
 config.set({
-	plugins: [new MyPlugin()]
+    plugins: [new MyPlugin()]
 });
 
 // Import of controllers should be after adding plugins:
@@ -162,73 +319,26 @@ import PostController from './controllers/post.controller.ts';
 2. Using the `ImportControllers` function for automatic import of controllers:
 
 ```ts
-import { config, MyPlugin, ImportControllers, AttachControllers } from '@wambata/express-decorators';
+import { config, ImportControllers, AttachControllers } from '@wambata/express-decorators';
 import Express from 'express';
+import MyPlugin from './my-plugin,'
 
 config.set({
-	plugins: [new MyPlugin()]
+    plugins: [new MyPlugin()]
 });
 
 // Using the ImportControllers function:
 async function bootstrap() {
-	const app = Express();
-	const controllers = await ImportControllers('**/*.controller.ts');
-	AttachControllers(app, controllers);
-	app.listen(3000);
+    const app = Express();
+    const controllers = await ImportControllers('**/*.controller.ts');
+    AttachControllers(app, controllers);
+    app.listen(3000);
 }
 
 bootstrap();
 ```
 
 In this example, the `ImportControllers` function automatically imports all controllers that match the `'**/*.controller.ts'` pattern. Thus, all controllers are imported after the plugin initialization, and the plugin events are called in the correct order.
-
-### Example of a Plugin
-
-Here is an example of a simple plugin:
-
-```ts
-import { join } from 'path';
-import { writeFileSync } from 'fs';
-import { Plugin, config } from '@wambata/express-decorators';
-
-const schema: string[] = [];
-const RouteMap = new Plugin();
-
-RouteMap.on('attach:end', ({ storage }) => {
-	storage.storage.forEach(controller => {
-		const controllerPath = controller.path!;
-
-		controller.httpMethods.forEach(httpMethod => {
-			const isApi = controller.isApi || httpMethod.isApi;
-			const routePath = join(isApi ? config.prefixApi : '', controllerPath, httpMethod.path!);
-			schema.push(`${controller.controller.name} | ${httpMethod.method} | ${routePath}`);
-		})
-
-		schema.push(`\n${'-'.repeat(40)}\n`);
-	});
-
-	writeFileSync('route-map.txt', schema.join('\n'));
-})
-
-export default RouteMap;
-```
-
-In this example, we subscribe to the `attach:end` event, which is called when all controllers have been attached. Reacting to this event, we turn to the metadata repository and create a file based on them that will help us navigate the routes of the project.
-
-To activate the plugin, you need to add it to the configuration:
-
-```ts
-import { config } from '@wambata/express-decorators';
-import RouteMap from './route-map';
-
-config.set({
-	plugins: [ RoutesMap ]
-});
-```
-
-* * * * * * * * 
-
-The `Plugin` class in `@wambata/express-decorator` is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
 
 ### Class: `Plugin`
 
@@ -255,22 +365,80 @@ This way, you can have specific actions or side effects when different events oc
 During the application execution, plugin events are called in the following order:
 1. `attach:start`
 2. `attach-controller:before`
-3. `attach-controller:after`
-4. `attach-http-method:before`
-5. `attach-http-method:after`
+3. `attach-http-method:before`
+4. `attach-http-method:after`
+5. `attach-controller:after`
 6. `attach:end`
 
-The events listed below do not have a strict order of call. The order of their call will depend on the way they are applied:
+The groups of events listed below do not have a strict order of invocation. The order in which they are called will depend on the order in which the corresponding decorators are applied:
+
+**Controller:**
 - `set-controller:before`
 - `set-controller:after`
+
+**Http-Method:**
 - `set-http-method:before`
 - `set-http-method:after`
+
+**Middleware:**
 - `set-middleware:before`
 - `set-middleware:after`
+
+**Api:**
 - `set-api:before`
 - `set-api:after`
 
-When using plugins, consider this sequence of events to correctly plan and control plugin behavior.
+> [!NOTE]
+> When using plugins, consider this sequence of events to correctly plan and control plugin behavior.
+
+
+### Example of a Plugin
+
+Here is an example of a simple plugin:
+
+```ts
+import { join } from 'path';
+import { writeFileSync } from 'fs';
+import { Plugin, config } from '@wambata/express-decorators';
+
+const schema: string[] = [];
+const RouteMap = new Plugin();
+
+RouteMap.on('attach:end', ({ storage }) => {
+    storage.storage.forEach(controller => {
+        const controllerPath = controller.path!;
+
+        controller.httpMethods.forEach(httpMethod => {
+            const isApi = controller.isApi || httpMethod.isApi;
+            const routePath = join(isApi ? config.prefixApi : '', controllerPath, httpMethod.path!);
+            schema.push(`${controller.controller.name} | ${httpMethod.method} | ${routePath}`);
+        })
+
+        schema.push(`\n${'-'.repeat(40)}\n`);
+    });
+
+    writeFileSync('route-map.txt', schema.join('\n'));
+})
+
+export default RouteMap;
+```
+
+In this example, we subscribe to the `attach:end` event, which is called when all controllers have been attached. Reacting to this event, we turn to the metadata repository and create a file based on them that will help us navigate the routes of the project.
+
+To activate the plugin, you need to add it to the configuration:
+
+```ts
+import { config } from '@wambata/express-decorators';
+import RouteMap from './route-map';
+
+config.set({
+    plugins: [ RoutesMap ]
+});
+```
+
+- - - - - -
+
+The `Plugin` class in `@wambata/express-decorator` is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
 
 ## Creating Your Own Metadata Storage Class
 
