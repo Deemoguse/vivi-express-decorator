@@ -41,5 +41,3 @@ describe(hl('Testing AttachControllers function. Using @Controller and @Get deco
 		});
 	});
 });
-
-/** @group modules */
