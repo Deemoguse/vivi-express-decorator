@@ -138,7 +138,7 @@ In this case, only the `get` method will be accessible at the path `/api/post/:i
 
 The `Middleware` decorator can be applied at the controller class level and at its method level.
 
-### Applying Api to a Controller Method
+### Applying Middleware to a Controller
 
 In this example, the middleware attached to the controller class will be executed each time the controller's HTTP child method is accessed.
 
@@ -148,12 +148,14 @@ import { Controller, Get, Middleware, Response, Request } from '@wambata/express
 @Controller('/post')
 @Middleware(someMiddleware)
 export default class PostController {
-    @Get('/:id')
+	@Get('/:id')
     public async get(req: Request, res: Response) {
-        // Request handling logic...
+		 // Request handling logic...
     }
 }
 ```
+
+### Applying Middleware to a Controller Method
 
 The middleware attached to the controller's HTTP method will execute each time this method is accessed.
 
@@ -234,14 +236,12 @@ class UserController extends BaseController {
 }
 ```
 
-> [!WARNING]
 > It is important to cancel that decorators applied to a controller class are not intentionally inherited. In other words, if you extend a controller class, you will have to reapply the `Controller`, `Middleware` and/or `Api` decorators to it.
 
 ## ImportControllers
 
 This auxiliary method allows you to automatically import all controllers that satisfy the passed _glob_ pattern. This can be useful if you have a large number of controllers and you want to automatically connect all of them. this  For instance:
 
-> [!TIP]
 > this method requires the controller to be exported by default.
 
 ```ts
@@ -295,10 +295,8 @@ Plugins in `@wambata/express-decorator` are tools that allow you to extend and c
 
 All plugins in `@wambata/express-decorator` are based on the event system. Each plugin can subscribe to specific events that are called at certain points during the application's execution. When an event occurs, all handlers associated with that event are called.
 
-> [!WARNING]
 > A feature of plugins in this library is that the order of controller imports matters. When using plugins, make sure that controllers are imported after plugin initialization, otherwise plugin events may not be called.
 
-> [!TIP]
 > To circumvent this problem and facilitate application scaling, the `ImportControllers` function is proposed, which automatically imports all controllers matching a given pattern.
 
 ### Plugin Use Examples
@@ -388,9 +386,7 @@ The groups of events listed below do not have a strict order of invocation. The 
 - `set-api:before`
 - `set-api:after`
 
-> [!NOTE]
 > When using plugins, consider this sequence of events to correctly plan and control plugin behavior.
-
 
 ### Example of a Plugin
 
