@@ -5,7 +5,7 @@ import type { StorageSetApiParams, StorageSetControllerParams, StorageSetHttpMet
  * A set of required fields for storage implementation.
  */
 export interface StorageBase {
-	storage: StorageControllersMap;
+	readonly storage: StorageControllersMap;
 	setIsApi(params: StorageSetApiParams): void;
 	setController(params: StorageSetControllerParams): void;
 	setHttpMethod(params: StorageSetHttpMethodParams): void;
