@@ -1,4 +1,5 @@
 import { $, hl, hld } from '../../utils';
+import { EntityController } from 'src/types/entities/entity-controller';
 
 class MyController { constructor () {}; method () {}}
 class OtherController { constructor () {}; method () {}}
@@ -36,6 +37,64 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 
 		test(hld('When passing a new class, it must be registered as a controller.'), () => {
 			expect(registeredControllerMeta).not.toBeUndefined();
+		});
+	});
+
+	// This test verifies the supplied metadata storage class:
+	describe(hl('- <Controller:|underline-bold> When extending a class, decorators are inherited properly:'), () => {
+		const testInheritHttpMethods = (registerBaseClass?: boolean, testRegistrationOfExtendedController?: boolean) => {
+			const storage = new $.Storage();
+			const middleware = () => {};
+
+			// Create extend class:
+			class ExtendedClass extends MyController {};
+
+			// Register middleware:
+			if (registerBaseClass) {
+				storage.setController({ controller: MyController, path: '/base' });
+			}
+			storage.setMiddleware({
+				target: 'http-method',
+				controller: MyController,
+				httpMethod: MyController.prototype.method,
+				middleware: middleware,
+			});
+
+
+			if (testRegistrationOfExtendedController) {
+				// Get meta of controllers:
+				const extendedControllerMeta = storage.storage.get(ExtendedClass)!;
+				expect(extendedControllerMeta).toBeUndefined();
+			}
+			else {
+				storage.setController({ controller: ExtendedClass, path: '/extended' });
+
+				// Get meta of controllers:
+				const extendedControllerMeta = storage.storage.get(ExtendedClass)!;
+				const myControllerMeta = getRegisteredControllerMeta(storage)!;
+				const myControllerHttpMethodMeta = getRegisteredHttpMethodMeta(storage)!;
+				const extendedControllerHttpMethodMeta = storage.storage.get(ExtendedClass)!.httpMethods.get(ExtendedClass.prototype.method)!;
+
+				// Test inherit HTTP methods:
+				expect(myControllerMeta.httpMethods.entries()).toEqual(extendedControllerMeta.httpMethods.entries());
+
+				// Test middleware functions:
+				expect(myControllerHttpMethodMeta.middlewares[0]).not.toBeUndefined();
+				expect(extendedControllerHttpMethodMeta.middlewares[0]).not.toBeUndefined();
+				expect(myControllerHttpMethodMeta.middlewares[0]).toStrictEqual(extendedControllerHttpMethodMeta.middlewares[0]);
+			}
+		};
+
+		test(hld('The extended controller class should not register as a controller.'), () => {
+			testInheritHttpMethods(false, true);
+		});
+
+		test(hld('Extension of a class registered as a controller.'), () => {
+			testInheritHttpMethods(true);
+		});
+
+		test(hld('Method decorators must inherit from a class that is not registered as a controller.'), () => {
+			testInheritHttpMethods();
 		});
 	});
 

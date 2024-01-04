@@ -6,13 +6,13 @@ describe(hl('Testing Plugin class. Using <express|magenta-bold>, Plugin, Storage
 	const plugin = new $.Plugin();
 	const storage = new $.Storage();
 
-	it(hld('Should correctly configure plugin.'), () => {
+	test(hld('Should correctly configure plugin.'), () => {
 		const config = { key: 'value' };
 		plugin.configurate(config);
 		expect(plugin.config).toEqual(config);
 	});
 
-	it(hld('should correctly call event listeners.'), () => {
+	test(hld('should correctly call event listeners.'), () => {
 		const mockListener = jest.fn();
 		const eventName: keyof $.PluginEventMap = 'attach-controller:after';
 		const eventParams: $.PluginEventMap[typeof eventName] = { app, storage };

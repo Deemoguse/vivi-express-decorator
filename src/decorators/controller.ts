@@ -6,6 +6,7 @@ import type { StorageSetControllerParams } from '../types/storage/storage-method
 /**
  * Registering a class as a controller.
  * @param path - route path.
+ * @throws {TypeError} The `path` is not a string.
  */
 export function Controller (path: string) {
 	if (typeof path !== 'string') {
