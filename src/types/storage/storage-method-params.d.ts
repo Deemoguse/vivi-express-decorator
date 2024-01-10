@@ -22,7 +22,7 @@ export type StorageSetControllerParams =
  */
 export type StorageSetHttpMethodParams =
 	| Pick<MetaController, 'controller'>
-	& Pick<MetaHttpMethod, 'function' | 'path' | 'method'>
+	& Pick<MetaHttpMethod, 'httpMethod' | 'path' | 'method'>
 	;
 
 /**
@@ -31,7 +31,7 @@ export type StorageSetHttpMethodParams =
 export type StorageSetMiddlewareParams =
 	| { target: 'http-method' | 'controller', middleware: EntityMiddleware | EntityMiddleware[] }
 	& { controller: MetaController['controller'] }
-	& { httpMethod?: MetaHttpMethod['function'] }
+	& { method?: MetaHttpMethod['method'] }
 	;
 
 /**
@@ -40,5 +40,5 @@ export type StorageSetMiddlewareParams =
 export type StorageSetApiParams =
 	| { target: 'http-method' | 'controller' }
 	& { controller: MetaController['controller'] }
-	& { httpMethod?: MetaHttpMethod['function'] }
+	& { method?: MetaHttpMethod['method'] }
 	;
