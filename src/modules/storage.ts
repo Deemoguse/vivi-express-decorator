@@ -33,14 +33,14 @@ export class Storage implements StorageBase {
 	 */
 	public setHttpMethod (params: StorageSetHttpMethodParams): void {
 		const controllerMeta = this._tryGetOrCreateController(params.controller);
-		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.function);
+		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.method);
 
-		if (httpMethodMeta.path && httpMethodMeta.method) {
+		if (httpMethodMeta.path && httpMethodMeta.httpMethod) {
 			throw new ReferenceError('Error: This method has already been registered');
 		}
 
 		httpMethodMeta.path = params.path;
-		httpMethodMeta.method = params.method;
+		httpMethodMeta.httpMethod = params.httpMethod;
 		httpMethodMeta.isActive = true;
 	}
 
@@ -49,7 +49,7 @@ export class Storage implements StorageBase {
 	 * @param params - Parameters required to add middleware.
 	 */
 	public setMiddleware (params: StorageSetMiddlewareParams): void {
-		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.httpMethod);
+		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.method);
 
 		if (Array.isArray(params.middleware)) {
 			entity.middlewares.push(...params.middleware);
@@ -63,7 +63,7 @@ export class Storage implements StorageBase {
 	 * @param params - Parameters required to declare the router as part of the API.
 	 */
 	public setIsApi (params: StorageSetApiParams): void {
-		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.httpMethod);
+		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.method);
 		entity.isApi = true;
 	}
 
@@ -175,8 +175,8 @@ export class Storage implements StorageBase {
 			isActive: false,
 			isApi: false,
 			path: undefined,
-			function: httpMethod,
-			method: undefined,
+			method: httpMethod,
+			httpMethod: undefined,
 			middlewares: [],
 		};
 	}

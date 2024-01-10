@@ -1,8 +1,9 @@
 import { glob } from 'glob';
-import { EntityController } from '../types/entities/entity-controller';
+import type { EntityController } from '../types/entities/entity-controller';
 
 /**
  * Auxiliary tool for importing controllers according to a given glob pattern.
+ * @example
  * ```ts
  * import { AttachControllers, ImportControllers } from '@wambata/express-decorators';
  *
