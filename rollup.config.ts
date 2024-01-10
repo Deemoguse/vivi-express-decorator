@@ -1,6 +1,6 @@
-import packageJson from './package.json';
+import packageJson from './package.json' assert { type: 'json' };
 import { defineConfig, RollupOptions } from 'rollup';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import cjs from '@rollup/plugin-commonjs';
 import ts from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
