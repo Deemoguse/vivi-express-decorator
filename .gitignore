@@ -1,8 +1,4 @@
 node_modules
-
-.vscode
-.idea
+dist
 
 *.swp
-
-dist
