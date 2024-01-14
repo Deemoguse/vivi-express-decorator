@@ -29,6 +29,7 @@ function createProject (experimentalDecorators: boolean, benchmarks: boolean): J
 
 	return {
 		...presets.defaults,
+		globals: { experimentalDecorators },
 		displayName: colors.reset(name),
 		testMatch: benchmarks ? [ patters.benchmarks ] : [ patters.modules, patters.integration ],
 		testEnvironment: benchmarks ? 'jest-bench/environment' : 'node',
