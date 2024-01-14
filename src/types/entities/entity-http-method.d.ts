@@ -1,8 +1,10 @@
-import type { Request, Response } from 'express';
-
 /**
  * Controller Method.
  */
-export type EntityHttpMethod =
-	| ((req?: Request, res?: Response) => any)
+export type EntityHttpMethod<
+	This extends any = any,
+	Args extends any[] = any,
+	Return extends any = any,
+> =
+	| ((this: This, ...args: Args) => Return)
 	;

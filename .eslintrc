@@ -89,6 +89,6 @@
 			}
 		],
 		"arrow-spacing": "error",
-		"prefer-arrow-callback": "error",
+		"prefer-arrow-callback": "error"
 	}
 }

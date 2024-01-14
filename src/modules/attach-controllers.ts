@@ -7,6 +7,7 @@ import type { EntityController } from '../types/entities/entity-controller';
 
 /**
  * Attaching controllers to an Express application instance.
+ * @example
  * ```ts
  * import Express from 'express';
  * import { AttachControllers, ImportControllers } from '@wambata/express-decorators';
@@ -67,7 +68,7 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 
 			// We define the name of the HTTP method, the parent router
 			// and optimize the path to the route of the HTTP method:
-			const httpMethodInterface = httpMethodMeta.method!.toLocaleLowerCase() as Lowercase<CommonHttp>;
+			const httpMethodInterface = httpMethodMeta.httpMethod!.toLocaleLowerCase() as Lowercase<CommonHttp>;
 			const httpMethodParentRouter = controllerMeta.isApi || httpMethodMeta.isApi ? apiRouter : controllerRouter;
 			const httpMethodRoutePath = controllerMeta.isApi || httpMethodMeta.isApi ? `${controllerMeta.path}/${httpMethodMeta.path}` : httpMethodMeta.path!;
 			const httpMethodNormalizeRoutePath = fixPath(httpMethodRoutePath);
@@ -76,7 +77,7 @@ export function AttachControllers (app: Express.Application, controllers: Entity
 			httpMethodParentRouter[httpMethodInterface](
 				httpMethodNormalizeRoutePath,
 				httpMethodMeta.middlewares,
-				httpMethodMeta.function.bind(controllerInstance),
+				httpMethodMeta.method.bind(controllerInstance),
 			);
 
 			// Call after attach HTTP-method event:

@@ -18,6 +18,6 @@ export type PluginEventCallbackSet<T extends PluginEventNames, Config = any> =
  * The type of object where the key is the name of the event,
  * and the value is an array of its callback functions.
  */
-export type PluginEventSet<Config = any> =
+export type PluginEventCallbackObject<Config = any> =
 	| { [K in PluginEventNames]?: PluginEventCallbackSet<K, Config> }
 	;

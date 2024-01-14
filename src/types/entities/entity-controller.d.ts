@@ -1,7 +1,9 @@
 /**
  * Controller.
  */
-export type EntityController =
-	| Function
-	& (new (...args: any) => any)
+export type EntityController<
+	This extends any = any,
+	Args extends any[] = any,
+> =
+	| (new (...args: Args) => This)
 	;

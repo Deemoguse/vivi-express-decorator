@@ -1,17 +1,29 @@
 import type { PluginBase } from '../plugin/plugin-base';
 import type { StorageBase } from '../storage/storage-base';
+import type { SupportStageProposal } from '../support/support-stage-proposal';
 
 /**
  * Configuration parameters for the 'set` method.
  */
-export type SetConfigOption =
+export type CommonSetConfigOption =
 	| Partial<Omit<CommonConfig, 'set' | 'lock'>>
 	;
 
 export interface CommonConfig {
 	/**
+	 * Which Stage Proposal should be use:
+	 *
+	 * - `'auto'` - Automatic detection of the current Decorator Stage Proposal.
+	 * - `2` - Use Decorator **_Stage 2_** Proposal.
+	 * - `3` - Use Decorator **_Stage 3_** Proposal.
+	 *
+	 * @default 'auto'
+	 */
+	support: SupportStageProposal,
+
+	/**
 	 * A static class that implements metadata {@link Storage} logic.
-	 * @default Storage
+	 * @default StorageBase
 	 */
 	storage: StorageBase,
 
@@ -39,5 +51,5 @@ export interface CommonConfig {
 	 * @param config - Config params.
 	 * @readonly
 	 */
-	readonly set: (config: SetConfigOption) => void,
+	readonly set: (config: CommonSetConfigOption) => void,
 }

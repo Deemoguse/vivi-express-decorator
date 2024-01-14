@@ -7,8 +7,8 @@ import type { EntityHttpMethod } from '../entities/entity-http-method';
  */
 export interface MetaHttpMethod extends Meta {
 	/** Controller method function. */
-	function: EntityHttpMethod,
+	method: EntityHttpMethod,
 
 	/** Method. */
-	method?: CommonHttp,
+	httpMethod?: CommonHttp,
 }
