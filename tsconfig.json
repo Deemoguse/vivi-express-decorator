@@ -1,20 +1,17 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"lib": [ "ESNext", "DOM" ],
+		"lib": [ "ESNext" ],
 		"module": "ESNext",
 		"moduleResolution": "Node",
+		"resolveJsonModule": true,
+		"sourceMap": true,
 		"strict": true,
 		"strictFunctionTypes": true,
-		"target": "ES2016",
-		"resolveJsonModule": true,
-		"baseUrl": "./",
-		"paths": { "$": [ "./src/index.ts" ]}
+		"target": "ES2016"
 	},
-	"include": [ "src", "./rollup.config.ts" ],
+	"include": [ "src", "test" ],
 	"exclude": [ "node_modules", "dist" ]
 }
