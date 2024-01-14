@@ -2,16 +2,19 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "🪲 Debug",
+			"name": "🪲 Run Tests",
 			"type": "node",
 			"request": "launch",
+			"env": {
+				"SKIP_BENCHMARKS_TESTS": "true"
+			},
 			"runtimeArgs": [
-				"--runInBand",
 				"--inspect-brk",
 				"${workspaceRoot}/node_modules/jest/bin/jest.js",
+				"--runInBand"
 			],
 			"console": "integratedTerminal",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "neverOpen",
 		}
 	]
 }
