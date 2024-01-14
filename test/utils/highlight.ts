@@ -50,7 +50,7 @@ const rules: HighlightRules = {
 		style: colors.bold.magenta,
 	},
 	classes: {
-		match: /\b(([A-Z]\w+)?Error|Plugin|Storage|Map)\b/g,
+		match: /\b(([A-Z]\w+)?Error|Plugin|Storage|Map|Support)\b/g,
 		style: colors.bold.green,
 	},
 
