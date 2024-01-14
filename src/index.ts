@@ -1,9 +1,8 @@
-import { Get } from './decorators/methods';
-
 // Export modules:
 export { config } from './modules/config';
-export { Storage } from './modules/storage';
 export { Plugin } from './modules/plugin';
+export { Support } from './modules/support';
+export { Storage } from './modules/storage';
 export { ImportControllers } from './modules/import-controllers';
 export { AttachControllers } from './modules/attach-controllers';
 

@@ -1,5 +1,4 @@
 import { $, hl, hld } from '../../utils';
-import { EntityController } from 'src/types/entities/entity-controller';
 
 class MyController { constructor () {}; method () {}}
 class OtherController { constructor () {}; method () {}}
@@ -56,7 +55,7 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 			storage.setMiddleware({
 				target: 'http-method',
 				controller: MyController,
-				httpMethod: MyController.prototype.method,
+				method: MyController.prototype.method,
 				middleware: middleware,
 			});
 
@@ -136,9 +135,8 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 				target: 'controller',
 				controller: MyController,
 				path: '/get',
-				method: 'Get',
-				function: MyController.prototype.method,
-				httpMethod: MyController.prototype.method,
+				httpMethod: 'Get',
+				method: MyController.prototype.method,
 				middleware: middleware,
 			});
 
@@ -180,7 +178,7 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 		const storage = new $.Storage();
 
 		// Register HTTP-method
-		storage.setHttpMethod({ controller: MyController, path: '/get', function: MyController.prototype.method, method: 'Get' });
+		storage.setHttpMethod({ controller: MyController, path: '/get', method: MyController.prototype.method, httpMethod: 'Get' });
 		const registeredHttpMethodMeta = getRegisteredHttpMethodMeta(storage)!;
 
 		test(hld('When passing a new method, it must be registered as an HTTP method.'), () => {
@@ -196,8 +194,8 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 		storage.setHttpMethod({
 			controller: MyController,
 			path: '/get',
-			function: MyController.prototype.method,
-			method: 'Get',
+			httpMethod: 'Get',
+			method: MyController.prototype.method,
 		});
 
 		// Test class:
@@ -223,16 +221,16 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 				storage.setHttpMethod({
 					controller: MyController,
 					path: '/get',
-					function: MyController.prototype.method,
-					method: 'Get',
+					httpMethod: 'Get',
+					method: MyController.prototype.method,
 				});
 
 				// Re-register method:
 				storage.setHttpMethod({
 					controller: MyController,
 					path: '/get',
-					function: MyController.prototype.method,
-					method: 'Get',
+					httpMethod: 'Get',
+					method: MyController.prototype.method,
 				});
 			}).toThrow(ReferenceError);
 		});
@@ -245,16 +243,16 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 				storage.setHttpMethod({
 					controller: MyController,
 					path: '/get',
-					function: MyController.prototype.method,
-					method: 'Get',
+					httpMethod: 'Get',
+					method: MyController.prototype.method,
 				});
 
 				// Re-register method:
 				storage.setHttpMethod({
 					controller: MyController,
 					path: '/post',
-					function: MyController.prototype.method,
-					method: 'Post',
+					httpMethod: 'Post',
+					method: MyController.prototype.method,
 				});
 			}).toThrow(ReferenceError);
 		});
@@ -269,9 +267,9 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 			// Call method:
 			storage[method]({
 				target: 'http-method',
-				controller: MyController,
-				httpMethod: MyController.prototype.method,
 				middleware: middleware,
+				method: MyController.prototype.method,
+				controller: MyController,
 			});
 
 			// Get data for test:
@@ -286,7 +284,7 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 			});
 			test(hld('The <path|yellow-bold> and <method|yellow-bold> fields of the HTTP-method must be <undefined|magenta-bold>.'), () => {
 				expect(registeredHttpMethodMeta.path).toBeUndefined();
-				expect(registeredHttpMethodMeta.method).toBeUndefined();
+				expect(registeredHttpMethodMeta.httpMethod).toBeUndefined();
 			});
 
 			// Specificity:
@@ -312,9 +310,9 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 			// Call method:
 			storage[method]({
 				target: 'http-method',
-				controller: MyController,
-				httpMethod: MyController.prototype.method,
 				middleware: middleware,
+				method: MyController.prototype.method,
+				controller: MyController,
 			});
 
 			// Get data for test:

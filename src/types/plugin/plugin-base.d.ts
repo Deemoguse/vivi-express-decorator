@@ -1,4 +1,4 @@
-import type { PluginEventCallback } from './plugin-events';
+import type { PluginEventCallback } from './plugin-event-callback';
 import type { PluginEventMap, PluginEventNames } from './plugin-events-map';
 
 /**

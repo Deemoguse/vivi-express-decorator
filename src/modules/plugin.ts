@@ -1,10 +1,11 @@
 import type { PluginBase } from '../types/plugin/plugin-base';
-import type { PluginEventCallback, PluginEventSet } from '../types/plugin/plugin-events';
+import type { PluginEventCallback, PluginEventCallbackObject } from '../types/plugin/plugin-event-callback';
 import type { PluginEventMap, PluginEventNames } from '../types/plugin/plugin-events-map';
 
 /**
  * Create a new plugin for decorators. Use the `on` method to declare an event listener.
  * You can embroider the class of your plugin with this class, or use a functional approach:
+ * @example
  * ```ts
  * import { Plugin } from '@wambata/express-decorators'.
  *
@@ -23,7 +24,7 @@ import type { PluginEventMap, PluginEventNames } from '../types/plugin/plugin-ev
  */
 export class Plugin<Config extends object = any> implements PluginBase<Config> {
 	// Plugin event set:
-	private events: PluginEventSet<Config> = {};
+	private events: PluginEventCallbackObject<Config> = {};
 
 	// Plugin config and configuration method:
 	public config: Config = {} as Config;
