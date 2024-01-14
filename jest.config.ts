@@ -4,7 +4,8 @@ import { compilerOptions } from './tsconfig.json';
 import type { JestConfigWithTsJest } from 'ts-jest';
 
 // ENVs:
-const skipBenchmarksTests = process.env.npm_config_skip_benchmarks_tests || process.env.SKIP_BENCHMARKS_TESTS === 'true';
+const envReportCoverage = process.env.npm_config_report_coverage || process.env.REPORT_COVERAGE;
+const envSkipBenchmarksTests = !!process.env.npm_config_skip_benchmarks_tests || process.env.SKIP_BENCHMARKS_TESTS === 'true';
 
 /**
  * Create test project.
@@ -40,14 +41,14 @@ function createProject (experimentalDecorators: boolean, benchmarks: boolean): J
 export default {
 	collectCoverage: true,
 	collectCoverageFrom: [ 'src/**/*.ts', '!src/**/*.d.ts' ],
-	// coverageReporters: [ 'cobertura', 'json-summary' ],
+	coverageReporters: envReportCoverage === 'html-spa' ? [ 'html-spa' ] : [ envReportCoverage ? 'text' : 'json' ],
 
 	projects: [
 		createProject(true, false),
 		createProject(false, false),
 
 		// Benchmarks Tests:
-		...(skipBenchmarksTests === false
+		...(envSkipBenchmarksTests === false
 			? [ createProject(true, true), createProject(false, true) ]
 			: []
 		),
