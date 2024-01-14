@@ -1,21 +1,16 @@
 import { $, createApp, hl, hld } from '../../utils';
 
+let classCount = 0;
+let methodCount = 10;
+const incrementClassCount = (_req: any, _res: any, next: $.NextFunction) => (classCount += 1, next());
+const incrementMethodCount = (_req: any, _res: any, next: $.NextFunction) => (methodCount += 1, next());
+
 @$.Controller('/')
-@$.Middleware(Controller._incrementClassCount)
+@$.Middleware(incrementClassCount)
 class Controller
 {
-	public static classCount = 0;
-	public static methodCount = 10;
-
-	private static _incrementClassCount (_req: any, _res: any, next: $.NextFunction) {
-		Controller.classCount += 1; next();
-	}
-	private static _incrementMethodCount (_req: any, _res: any, next: $.NextFunction) {
-		Controller.methodCount += 1; next();
-	}
-
 	@$.Get('/get')
-	@$.Middleware(Controller._incrementMethodCount)
+	@$.Middleware(incrementMethodCount)
 	public get (_: any, res: $.Response) { res.status(200).send({ result: 'OK' }); }
 }
 
@@ -30,7 +25,7 @@ describe(hl('Test request to the HTTP methods. Use @Controller, @Get & @Middlewa
 		//	Increment counts:
 		await Promise.all(promises.map((el) => el()));
 
-		expect(Controller.classCount).toEqual(6);
-		expect(Controller.methodCount).toEqual(16);
+		expect(classCount).toEqual(6);
+		expect(methodCount).toEqual(16);
 	});
 });

@@ -4,7 +4,9 @@ let config = { ...$.config };
 
 describe(hl('Testing config methods. Using config.lock and config.set.'), () => {
 	// Unfreeze config object:
-	beforeEach(() => config = { ...$.config });
+	beforeEach(() => {
+		config = { ...$.config };
+	});
 
 	// Test `config.lock`:
 	describe(hl('- <config.lock:|underline-bold> Testing the config.lock method:'), () => {

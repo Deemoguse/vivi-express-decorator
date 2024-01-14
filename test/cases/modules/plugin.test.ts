@@ -20,6 +20,6 @@ describe(hl('Testing Plugin class. Using <express|magenta-bold>, Plugin, Storage
 		plugin.on(eventName, mockListener);
 		plugin.callEvent(eventName, { app, storage });
 
-		expect(mockListener).toBeCalledWith(eventParams, plugin.config);
+		expect(mockListener).toHaveBeenCalledWith(eventParams, plugin.config);
 	});
 });
