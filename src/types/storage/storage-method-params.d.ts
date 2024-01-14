@@ -22,23 +22,24 @@ export type StorageSetControllerParams =
  */
 export type StorageSetHttpMethodParams =
 	| Pick<MetaController, 'controller'>
-	& Pick<MetaHttpMethod, 'httpMethod' | 'path' | 'method'>
+	& Required<Pick<MetaHttpMethod, 'httpMethod' | 'path' | 'method'>>
 	;
 
 /**
  * Parameters required to register a middleware.
  */
 export type StorageSetMiddlewareParams =
-	| { target: 'http-method' | 'controller', middleware: EntityMiddleware | EntityMiddleware[] }
-	& { controller: MetaController['controller'] }
-	& { method?: MetaHttpMethod['method'] }
+	| { readonly target: 'http-method' | 'controller' }
+	& { readonly middleware: EntityMiddleware | EntityMiddleware[] }
+	& { readonly controller: MetaController['controller'] }
+	& { readonly method?: MetaHttpMethod['method'] }
 	;
 
 /**
  * Parameters required to declare the router as part of the Api.
  */
 export type StorageSetApiParams =
-	| { target: 'http-method' | 'controller' }
-	& { controller: MetaController['controller'] }
-	& { method?: MetaHttpMethod['method'] }
+	| { readonly target: 'http-method' | 'controller' }
+	& { readonly controller: MetaController['controller'] }
+	& { readonly method?: MetaHttpMethod['method'] }
 	;
