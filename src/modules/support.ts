@@ -24,9 +24,9 @@ export class Support {
 	): void {
 		// Is Stage 2 Proposal:
 		if (
-			typeof target === 'object' &&
-			typeof nameOrContext === 'string' &&
-			typeof descriptor?.value === 'function'
+			typeof descriptor?.value &&
+			(typeof target === 'object' || typeof target === 'function') &&
+			(typeof nameOrContext === 'string' || typeof nameOrContext === 'undefined')
 		) {
 			Support.stageProposal = 2;
 		}
