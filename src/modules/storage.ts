@@ -18,7 +18,7 @@ export class Storage implements StorageBase {
 	 * @param params - Parameters for controller registration.
 	 */
 	public setController (params: StorageSetControllerParams): void {
-		const controllerMeta = this._tryGetOrCreateController(params.controller);
+		const controllerMeta = this.tryGetOrCreateController(params.controller);
 		if (controllerMeta.path) {
 			throw new ReferenceError('Error: This class has already been registered');
 		}
@@ -32,8 +32,8 @@ export class Storage implements StorageBase {
 	 * @param params - Parameters for HTTP method registration.
 	 */
 	public setHttpMethod (params: StorageSetHttpMethodParams): void {
-		const controllerMeta = this._tryGetOrCreateController(params.controller);
-		const httpMethodMeta = this._tryGetOrCreateHttpMethod(controllerMeta.controller, params.method);
+		const controllerMeta = this.tryGetOrCreateController(params.controller);
+		const httpMethodMeta = this.tryGetOrCreateHttpMethod(controllerMeta.controller, params.method);
 
 		if (httpMethodMeta.path && httpMethodMeta.httpMethod) {
 			throw new ReferenceError('Error: This method has already been registered');
@@ -49,7 +49,7 @@ export class Storage implements StorageBase {
 	 * @param params - Parameters required to add middleware.
 	 */
 	public setMiddleware (params: StorageSetMiddlewareParams): void {
-		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.method);
+		const entity = this.tryGetOrCreateEntity(params.target, params.controller, params.method);
 
 		if (Array.isArray(params.middleware)) {
 			entity.middlewares.push(...params.middleware);
@@ -63,7 +63,7 @@ export class Storage implements StorageBase {
 	 * @param params - Parameters required to declare the router as part of the API.
 	 */
 	public setIsApi (params: StorageSetApiParams): void {
-		const entity = this._tryGetOrCreateEntity(params.target, params.controller, params.method);
+		const entity = this.tryGetOrCreateEntity(params.target, params.controller, params.method);
 		entity.isApi = true;
 	}
 
@@ -83,12 +83,12 @@ export class Storage implements StorageBase {
 	 * @param controller - The class to register as a controller.
 	 * @returns The controller metadata.
 	 */
-	private _tryGetOrCreateController (controller: EntityController): MetaController {
+	protected tryGetOrCreateController (controller: EntityController): MetaController {
 		if (!this.storage.has(controller)) {
 			const baseController = Object.getPrototypeOf(controller);
 			const controllerMeta = this.storage.has(baseController)
-				? this._createControllerMetaObjectWithInheritHttpMethods(controller, baseController)
-				: this._createBaseControllerMetaObject(controller);
+				? this.createControllerMetaObjectWithInheritHttpMethods(controller, baseController)
+				: this.createBaseControllerMetaObject(controller);
 
 			this.storage.set(controller, controllerMeta);
 		}
@@ -102,12 +102,12 @@ export class Storage implements StorageBase {
 	 * @param httpMethod - The method of the class that should be registered as a controller method.
 	 * @returns The HTTP method metadata.
 	 */
-	private _tryGetOrCreateHttpMethod (
+	protected tryGetOrCreateHttpMethod (
 		controller: EntityController,
 		httpMethod: EntityHttpMethod,
 	): MetaHttpMethod {
-		const controllerMeta = this._tryGetOrCreateController(controller);
-		const httpMethodMeta = this._createBaseHttpMethodMetaObject(httpMethod);
+		const controllerMeta = this.tryGetOrCreateController(controller);
+		const httpMethodMeta = this.createBaseHttpMethodMetaObject(httpMethod);
 
 		if (!controllerMeta.httpMethods.has(httpMethod)) {
 			controllerMeta.httpMethods.set(httpMethod, httpMethodMeta);
@@ -122,21 +122,21 @@ export class Storage implements StorageBase {
 	 * @param httpMethod - HTTP controller method.
 	 * @returns The entity metadata.
 	 */
-	private _tryGetOrCreateEntity (
+	protected tryGetOrCreateEntity (
 		target: StorageEntityTypes,
 		controller: EntityController,
 		httpMethod?: EntityHttpMethod,
 	): MetaController | MetaHttpMethod {
 		return target === 'http-method'
-			? this._tryGetOrCreateHttpMethod(controller, httpMethod!)
-			: this._tryGetOrCreateController(controller);
+			? this.tryGetOrCreateHttpMethod(controller, httpMethod!)
+			: this.tryGetOrCreateController(controller);
 	}
 
 	/**
 	 * Create base controller metadata.
 	 * @param controller - Origin controller class.
 	 */
-	private _createBaseControllerMetaObject (controller: EntityController): MetaController {
+	protected createBaseControllerMetaObject (controller: EntityController): MetaController {
 		return {
 			isActive: false,
 			isApi: false,
@@ -153,12 +153,12 @@ export class Storage implements StorageBase {
 	 * @param baseController - Base controller class.
 	 * @returns
 	 */
-	private _createControllerMetaObjectWithInheritHttpMethods (
+	protected createControllerMetaObjectWithInheritHttpMethods (
 		controller: EntityController,
 		baseController: EntityController,
 	): MetaController {
-		const controllerMeta = this._createBaseControllerMetaObject(controller);
-		const baseControllerMeta = this._tryGetOrCreateController(baseController);
+		const controllerMeta = this.createBaseControllerMetaObject(controller);
+		const baseControllerMeta = this.tryGetOrCreateController(baseController);
 
 		// Inherit HTTP method metadata:
 		controllerMeta.httpMethods = new Map(baseControllerMeta.httpMethods);
