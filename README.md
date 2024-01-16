@@ -1,6 +1,6 @@
 # WAMBATA. Express-decorators
 
-**WAMBATA** is a modern, minimalist library for Express.js, designed to simplify the development of web applications using decorators. The library is a set of powerful tools that allow developers to expressively and effectively structure their applications, applying the concepts of classes and decorators within the architecture of Express.
+`@wambata/express-decorators` is a modern, minimalist library for Express.js, designed to simplify the development of web applications using decorators. The library is a set of powerful tools that allow developers to expressively and effectively structure their applications, applying the concepts of classes and decorators within the architecture of Express.
 
 ## Key Features
 
@@ -83,6 +83,7 @@ Below is a description of the key modules of the `@wambata/express-decorators` l
 | `AttachController`         | A method for attaching controllers to an application instance.                                                              |
 | `ImportControllers`        | An asynchronous method for importing controllers by a passed _glob_ pattern.                                                |
 | `Plugin`                   | A class for creating and managing plugins, allowing for the expansion of the library's functional capabilities.             |
+| `Support`                  | A class that provides a definition of the current stage of the decorator's proposal.                                        |
 
 In addition to providing core modules, the `@wambata/express-decorators` library also re-exports key interfaces and types from `express` for ease of use. This includes:
 
@@ -91,6 +92,45 @@ In addition to providing core modules, the `@wambata/express-decorators` library
 - **Additional Types**: The library also exports various useful types and interfaces that will be beneficial for developers.
 
 These interfaces and types simplify integration with `express` and reduce the number of necessary imports, making your code cleaner and more organized.
+
+## Support for Decorator Stage Proposals
+
+The `@wambata/express-decorators` library provides support for implementations of decorators at different development stages (Stage 2 and Stage 3 Proposals). This means that in most cases, you don't have to worry about choosing a specific stage implementation for decorators – the library will automatically identify the most suitable implementation and apply it.
+
+### Automatic Stage Implementation Selection
+
+By default, the library autonomously selects the appropriate stage implementation for decorators. This frees developers from the need to manually specify the preferred stage, ensuring seamless integration and compatibility.
+
+### Specifying a Particular Stage Implementation
+
+However, if you need to use a specific stage implementation for decorators, or if you encounter the error `Error: The current Decorator Stage Proposal could not be determined`, you can explicitly specify your preferred stage using the `config.support` object in the following options:
+
+- `2` - Decorators Stage 2 Proposal.
+- `3` - Decorators Stage 3 Proposal.
+- `auto` - **_Default value_**. Automatically determine the suitable implementation.
+
+### Example of Usage
+
+```javascript
+import { config } from '@wambata/express-decorators';
+
+// Setting Stage 2 Proposal
+config.set({
+    support: 2,
+});
+
+// Or choosing Stage 3 Proposal
+config.set({
+    support: 3,
+});
+
+// Or reverting to automatic detection (default)
+config.set({
+    support: 'auto',
+});
+```
+
+These settings allow you to flexibly manage the use of decorators in your application, ensuring compliance with your specific requirements and preferences.
 
 ## Using the Api Decorator
 
@@ -148,9 +188,9 @@ import { Controller, Get, Middleware, Response, Request } from '@wambata/express
 @Controller('/post')
 @Middleware(someMiddleware)
 export default class PostController {
-	@Get('/:id')
+    @Get('/:id')
     public async get(req: Request, res: Response) {
-		 // Request handling logic...
+        // Request handling logic...
     }
 }
 ```
@@ -183,7 +223,7 @@ import { Controller, Get, Middleware, Response, Request } from '@wambata/express
 @Controller('/post')
 @Middleware([ someMiddleware1, someMiddleware2 ])
 export default class PostController {
-	// ...
+    // ...
 }
 ```
 
@@ -219,7 +259,7 @@ class BaseController {
 
     @Get('/description')
     public async getNamespaceDescription (req: Request, res: Response) {
-	     res.send(this._description);
+        res.send(this._description);
     }
 }
 
@@ -227,7 +267,7 @@ class BaseController {
 class UserController extends BaseController {
     protected readonly _description: Description = {
         // Some description ...
-	 }
+    }
 
     @Get('/some')
     public async someMethod (req: Request, res: Response) {
@@ -249,10 +289,10 @@ import { AttachControllers, ImportControllers } from '@wambata/express-controlle
 import Express from 'express';
 
 async function bootstrap() {
-  const app = Express();
-  const controllers = await ImportControllers('**/*.controller.ts');
-  AttachControllers(app, controllers);
-  app.listen(3000);
+    const app = Express();
+    const controllers = await ImportControllers('**/*.controller.ts');
+    AttachControllers(app, controllers);
+    app.listen(3000);
 }
 
 bootstrap();
@@ -269,9 +309,9 @@ import MyStorageClass from './my-storage-class';
 import MyPluginClass from './my-plugin-class';
 
 config.set({
-	storage: MyStorageClass,
-	prefixApi: '/myapi',
-	plugins: [new MyPluginClass()]
+    storage: MyStorageClass,
+    prefixApi: '/myapi',
+    plugins: [new MyPluginClass()]
 });
 ```
 
@@ -432,10 +472,6 @@ config.set({
 });
 ```
 
-- - - - - -
-
-The `Plugin` class in `@wambata/express-decorator` is a customizable event-driven construct that lets you extend the behavior of the library according to the needs of your specific use-case. Here is a detailed breakdown of the Plugin class and its methods:
-
 ## Creating Your Own Metadata Storage Class
 
 The `@wambata/express-decorator` library provides a built-in `Storage` class that serves to store metadata about controllers and their methods. However, depending on the needs of your application, you may want to replace this class with your own.
@@ -457,8 +493,31 @@ import { config } from '@wambata/express-decorators';
 import MyStorage from './my-storage';
 
 config.set({
-	storage: new MyStorage()
+    storage: new MyStorage()
 });
 ```
 
 Now, all metadata related to controllers and their methods will be stored and processed by your own storage class.
+
+- - - - - - - -
+
+## Tests
+
+For testing, use the standard `npm test` command or similar. This command can accept the following flags:
+
+- `report-coverage` - Display the results of the test coverage check in the console. Pass the value `html-spa` to generate an application with the results.
+- `skip-benchmarks-tests` - Skip benchmark testing.
+
+These flags can pass both the values of the **npm config** (`npm run test --report-coverage` or `npm run test --report-coverage=html-spa`) and in the form of environment variables, which is useful when debugging in the IDE.
+
+The results of the test coverage and benchmark check will be recorded in the `coverage` and `benchmarks` directories, respectively.
+
+## Community Contribution
+
+The code of this project tries to be obvious and understandable, and the documentation tries to be exhaustive. Any improvements and PR are welcome and will be reviewed. If you decide to improve this library and you have any questions, feel free to ask them!
+
+It is important to follow two rules:
+- Stick to the general style of writing code - try to use classes where appropriate and leave comments.
+- Your solution must be covered by at least 75% of the tests.
+
+Welcome!

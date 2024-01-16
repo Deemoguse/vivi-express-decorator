@@ -1,6 +1,6 @@
 {
 	"name": "@wambata/express-decorators",
-	"version": "1.1.1",
+	"version": "1.2.1",
 	"description": "A minimalistic package that supplies decorator functions for working with Express controller classes.",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
@@ -25,11 +25,15 @@
 		"router"
 	],
 	"author": "Ruslan Radionov <cugune.tyan@gmail.com>",
+	"bugs": {
+		"url": "https://github.com/Deemoguse/wambata-express-decorators/issues/new/choose",
+		"email": "cugune.tyan@gmail.com"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Deemoguse/wambata-express-decorators"
 	},
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"devDependencies": {
 		"@types/jest": "^29.5.11",
 		"@types/supertest": "^2.0.12",
