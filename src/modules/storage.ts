@@ -36,7 +36,6 @@ export class Storage implements StorageBase {
 	public setHttpMethod (params: StorageSetHttpMethodParams): void {
 		const controllerMeta = this.tryGetOrCreateController(params.controller);
 		const httpMethodMeta = this.tryGetOrCreateHttpMethod(controllerMeta.controller, params.method);
-
 		if (httpMethodMeta.path && httpMethodMeta.httpMethod) {
 			throw new Error('Error: This method has already been registered');
 		}
