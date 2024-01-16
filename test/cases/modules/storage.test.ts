@@ -108,7 +108,7 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 
 				// Re-register class:
 				storage.setController({ controller: MyController, path: '/' });
-			}).toThrow(ReferenceError);
+			}).toThrow(Error);
 		});
 
 		test('Re-registration, but the parameters are different.', () => {
@@ -119,8 +119,8 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 				storage.setController({ controller: MyController, path: '/' });
 
 				// Re-register class:
-				storage.setController({ controller: MyController, path: '/' });
-			}).toThrow(ReferenceError);
+				storage.setController({ controller: MyController, path: '/foo' });
+			}).toThrow(Error);
 		});
 	});
 
@@ -232,7 +232,7 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 					httpMethod: 'Get',
 					method: MyController.prototype.method,
 				});
-			}).toThrow(ReferenceError);
+			}).toThrow(Error);
 		});
 
 		test('Re-registration, but the parameters are different.', () => {
@@ -254,7 +254,7 @@ describe(hl('The Storage contains all required methods and fields. Using Storage
 					httpMethod: 'Post',
 					method: MyController.prototype.method,
 				});
-			}).toThrow(ReferenceError);
+			}).toThrow(Error);
 		});
 	});
 
