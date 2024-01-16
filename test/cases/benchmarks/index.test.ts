@@ -2,7 +2,7 @@
 import { benchmarkSuite } from 'jest-bench';
 import { $, createApp, hl, hld } from '../../utils';
 
-const CONTROLLER_COUNT = 150;
+const CONTROLLER_COUNT = 500;
 
 benchmarkSuite(hl('Test perfomance:'), {
 	[hld(`Registration of ${CONTROLLER_COUNT} controllers with 3 routes (total 450 routes).`)]: (defference) => {
@@ -31,5 +31,8 @@ benchmarkSuite(hl('Test perfomance:'), {
 
 		// Attach all Controllers:
 		createApp(controllers);
+
+		// End test:
+		defference.resolve();
 	},
 });
