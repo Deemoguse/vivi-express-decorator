@@ -16,6 +16,7 @@ export class Storage implements StorageBase {
 	/**
 	 * Register a class as a controller.
 	 * @param params - Parameters for controller registration.
+	 * @throws {Error} If this class has already been registered.
 	 */
 	public setController (params: StorageSetControllerParams): void {
 		const controllerMeta = this.tryGetOrCreateController(params.controller);
@@ -30,6 +31,7 @@ export class Storage implements StorageBase {
 	/**
 	 * Register a class method as an HTTP controller method.
 	 * @param params - Parameters for HTTP method registration.
+	 * @throws {Error} If this method has already been registered.
 	 */
 	public setHttpMethod (params: StorageSetHttpMethodParams): void {
 		const controllerMeta = this.tryGetOrCreateController(params.controller);
@@ -135,6 +137,7 @@ export class Storage implements StorageBase {
 	/**
 	 * Create base controller metadata.
 	 * @param controller - Origin controller class.
+	 * @returns The metadata object of a controller.
 	 */
 	protected createBaseControllerMetaObject (controller: EntityController): MetaController {
 		return {
@@ -151,7 +154,7 @@ export class Storage implements StorageBase {
 	 * Create a controller metadata object with the inherited metadata of the HTTP methods of the base controller class.
 	 * @param controller - Origin controller class.
 	 * @param baseController - Base controller class.
-	 * @returns
+	 * @returns The metadata object of a controller with inherited methods.
 	 */
 	protected createControllerMetaObjectWithInheritHttpMethods (
 		controller: EntityController,
@@ -169,6 +172,7 @@ export class Storage implements StorageBase {
 	/**
 	 * Create base HTTP method metadata.
 	 * @param controller - Origin controller class.
+	 * @returns The metadata object of the HTTP method.
 	 */
 	protected createBaseHttpMethodMetaObject (httpMethod: EntityHttpMethod): MetaHttpMethod {
 		return {
